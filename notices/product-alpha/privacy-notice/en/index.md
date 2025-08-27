@@ -1,13 +1,13 @@
-# Informativa sul trattamento dei dati personali
+# Privacy notice
 
-La presente informativa illustra i trattamenti di dati personali che (Company) effettua per fornire il servizio agli utenti.
+This notice illustrates the processing of personal data that (Company) carries out to provide the service to users.
 
-**Ultimo aggiornamento:** 27/08/2025
+**Last update:** 27/08/2025
 
-## 1. Titolare del trattamento
+## 1. Data controller
 
-Il titolare del trattamento è (Company), con sede in ....
+The data controller is (Company), with registered office in ....
 
-## 2. Responsabile Protezione Dati
+## 2. Data Protection Officer
 
-(Company) ha nominato un proprio Responsabile della Protezione dei Dati (DPO), ai sensi dell’art. 37 del GDPR, che può essere contattato tramite i seguenti recapiti:
+(Company) has appointed its own Data Protection Officer (DPO), pursuant to Article 37 of the GDPR, who can be contacted using the following contact details:
