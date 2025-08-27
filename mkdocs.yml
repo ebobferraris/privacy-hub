@@ -1,0 +1,34 @@
+    
+# mkdocs.yml
+site_name: 'Your Company Privacy Hub'
+
+theme:
+  name: material
+  language: it # Lingua di default dell'interfaccia del sito
+  features:
+    - navigation.tabs
+
+extra:
+  alternate:
+    # Elenco delle lingue disponibili
+    - name: Italiano
+      link: /it/
+      lang: it
+    - name: English
+      link: /en/
+      lang: en
+
+plugins:
+  - search
+
+# La navigazione ora punta SOLO alla lingua di default (italiano).
+# Il tema si occuperà di trovare le altre lingue e creare lo switcher.
+nav:
+  - 'Home': 'index.md'
+  - 'Product Alpha':
+      - 'Informativa Privacy': 'notices/product-alpha/privacy-notice/it/index.md'
+      - 'Termini di Servizio': 'notices/product-alpha/terms-of-service/it/index.md'
+  - 'Product Beta':
+      - 'Informativa Privacy': 'notices/product-beta/privacy-notice/it/index.md'
+      - 'Termini di Servizio': 'notices/product-beta/terms-of-service/it/index.md'
+  
