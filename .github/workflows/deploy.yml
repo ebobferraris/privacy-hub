@@ -33,7 +33,7 @@ jobs:
       # Non è più necessario pre-generare le pagine di cronologia.
       # Il tema MkDocs Material gestirà lo switching delle lingue e dei contenuti.
       - name: Build Hub Website with MkDocs
-        run: mkdocs build
+        run: mkdocs build --no-directory-urls
 
       # --- STAGE 2: Build the Headless notices.json File ---
       - name: Create Pandoc Lua Filter for Semantic HTML
