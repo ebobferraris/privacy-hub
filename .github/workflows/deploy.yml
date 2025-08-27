@@ -1,0 +1,130 @@
+name: Build and Deploy Privacy Hub and Headless CMS
+
+on:
+  push:
+    # Esegui su TUTTI i branch, così possiamo testare su 'develop'
+    branches:
+      - '**' 
+    tags:
+      - '*/*/*'
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+      # Aggiungi questo permesso per il deploy su GitHub Pages
+      pages: write 
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update && sudo apt-get install -y pandoc jq
+          pip install mkdocs mkdocs-material
+
+      # --- STAGE 1: Build the Privacy Hub Website ---
+      # Non è più necessario pre-generare le pagine di cronologia.
+      # Il tema MkDocs Material gestirà lo switching delle lingue e dei contenuti.
+      - name: Build Hub Website with MkDocs
+        run: mkdocs build
+
+      # --- STAGE 2: Build the Headless notices.json File ---
+      - name: Create Pandoc Lua Filter for Semantic HTML
+        run: |
+          # Questa è la versione corretta e più robusta del filtro Lua
+          cat <<'EOF' > add-classes.lua
+          -- Funzione di utilità per aggiungere una classe a un elemento.
+          -- Controlla se l'elemento ha già delle classi e, in caso, aggiunge
+          -- la nuova classe. Altrimenti, crea la lista delle classi.
+          function add_class_to_element(element, class_name)
+            if element.classes then
+              table.insert(element.classes, class_name)
+            else
+              element.classes = {class_name}
+            end
+            return element
+          end
+
+          -- Ritorna un oggetto che Pandoc userà per trasformare gli elementi
+          return {
+            Header = function(el)
+              return add_class_to_element(el, "privacy-h" .. el.level)
+            end,
+            Para = function(el)
+              return add_class_to_element(el, "privacy-p")
+            end,
+            BulletList = function(el)
+              return add_class_to_element(el, "privacy-ul")
+            end,
+            OrderedList = function(el)
+              return add_class_to_element(el, "privacy-ol")
+            end
+          }
+          EOF
+          echo "Pandoc Lua filter (robust version) created at ./add-classes.lua"
+      
+      - name: Build Headless notices.json
+        run: |
+          final_json="{}"
+          # Trova le directory delle notice (quelle che contengono sottocartelle di lingua)
+          find notices -mindepth 2 -maxdepth 2 -type d | while read -r notice_dir; do
+            notice_slug=$(echo "$notice_dir" | sed 's|^notices/||') # es. product-alpha/privacy-notice
+            
+            # --- LATEST VERSION ---
+            latest_langs_json="{}"
+            for lang_dir in "$notice_dir"/*/; do
+              lang_code=$(basename "$lang_dir")
+              lang_file="$lang_dir/index.md"
+              if [ -f "$lang_file" ]; then
+                html=$(pandoc --from markdown --to html --lua-filter=add-classes.lua "$lang_file")
+                latest_langs_json=$(echo "$latest_langs_json" | jq --arg code "$lang_code" --argjson html "$(echo "$html" | jq -sR .)" '.[$code] = {html: $html}')
+              fi
+            done
+            final_json=$(echo "$final_json" | jq --arg slug "$notice_slug" --argjson langs "$latest_langs_json" '.[$slug].latest = $langs')
+
+            # --- HISTORY ---
+            tags=$(git tag -l "$notice_slug/v*" | sort -Vr)
+            history_json="[]"
+            if [ -n "$tags" ]; then
+              for tag in $tags; do
+                version=$(echo "$tag" | cut -d'/' -f3)
+                history_langs_json="{}"
+                # Controlla quali lingue esistevano per quel tag
+                git ls-tree -r --name-only "$tag" "$notice_dir" | cut -d'/' -f4 | uniq | while read -r lang_code; do
+                  if [ -n "$lang_code" ]; then
+                    historical_html=$(git show "$tag:$notice_dir/$lang_code/index.md" | pandoc --from markdown --to html --lua-filter=add-classes.lua)
+                    history_langs_json=$(echo "$history_langs_json" | jq --arg code "$lang_code" --argjson html "$(echo "$historical_html" | jq -sR .)" '.[$code] = {html: $html}')
+                  fi
+                done
+                version_obj=$(jq -n --arg ver "$version" --argjson langs "$history_langs_json" '{version: $ver, languages: $langs}')
+                history_json=$(echo "$history_json" | jq --argjson obj "$version_obj" '. += [$obj]')
+              done
+            fi
+            final_json=$(echo "$final_json" | jq --arg slug "$notice_slug" --argjson hist "$history_json" '.[$slug].history = $hist')
+          done
+          echo "$final_json" > site/notices.json
+          echo "notices.json multilingua creato con successo."
+
+      # --- NUOVO: SEZIONE DI TEST ---
+      # Questi passaggi verranno eseguiti SOLO SE NON siamo sul branch 'main'
+      - name: Upload Artifact for Inspection (Test/Develop Branches)
+        if: github.ref != 'refs/heads/main'
+        uses: actions/upload-artifact@v4
+        with:
+          name: privacy-hub-output
+          path: ./site
+
+      - name: Setup Pages (Test/Develop Branches)
+        if: github.ref != 'refs/heads/main'
+        uses: actions/configure-pages@v5
+        
+      - name: Deploy to GitHub Pages for Preview (Test/Develop Branches)
+        if: github.ref != 'refs/heads/main'
+        uses: actions/deploy-pages@v4
