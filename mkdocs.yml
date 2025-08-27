@@ -1,6 +1,10 @@
     
 # mkdocs.yml
 site_name: 'Your Company Privacy Hub'
+site_author: 'The Legal and Privacy Team'
+site_description: 'Official hub for all legal notices and terms of service.'
+
+docs_dir: notices
 
 theme:
   name: material
