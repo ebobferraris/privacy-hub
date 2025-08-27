@@ -38,14 +38,38 @@ jobs:
       # --- STAGE 2: Build the Headless notices.json File ---
       - name: Create Pandoc Lua Filter for Semantic HTML
         run: |
+          # Questa è la versione corretta e più robusta del filtro Lua
           cat <<'EOF' > add-classes.lua
-          function add_class(el, c) return el:addClass(c) end
-          return {{Header=function(el) return add_class(el, "privacy-h" .. el.level) end},
-                  {Para=function(el) return add_class(el, "privacy-p") end},
-                  {BulletList=function(el) return add_class(el, "privacy-ul") end},
-                  {OrderedList=function(el) return add_class(el, "privacy-ol") end}}
-          EOF
+          -- Funzione di utilità per aggiungere una classe a un elemento.
+          -- Controlla se l'elemento ha già delle classi e, in caso, aggiunge
+          -- la nuova classe. Altrimenti, crea la lista delle classi.
+          function add_class_to_element(element, class_name)
+            if element.classes then
+              table.insert(element.classes, class_name)
+            else
+              element.classes = {class_name}
+            end
+            return element
+          end
 
+          -- Ritorna un oggetto che Pandoc userà per trasformare gli elementi
+          return {
+            Header = function(el)
+              return add_class_to_element(el, "privacy-h" .. el.level)
+            end,
+            Para = function(el)
+              return add_class_to_element(el, "privacy-p")
+            end,
+            BulletList = function(el)
+              return add_class_to_element(el, "privacy-ul")
+            end,
+            OrderedList = function(el)
+              return add_class_to_element(el, "privacy-ol")
+            end
+          }
+          EOF
+          echo "Pandoc Lua filter (robust version) created at ./add-classes.lua"
+      
       - name: Build Headless notices.json
         run: |
           final_json="{}"
