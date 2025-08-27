@@ -35,6 +35,14 @@ jobs:
       - name: Build Hub Website with MkDocs
         run: mkdocs build
 
+      # --- NUOVO STEP: Risolvi i Symlinks creando un archivio TAR ---
+      # Questo step sostituisce la necessità di un upload-artifact separato per l'Hub.
+      - name: Create Pages Artifact TAR with Symlinks Resolved
+        run: |
+          # Il flag 'h' o '--dereference' è la chiave. Dice a 'tar' di
+          # archiviare il file a cui punta il link, non il link stesso.
+          tar -hcvf artifact.tar --directory=site .
+
       # --- STAGE 2: Build the Headless notices.json File ---
       - name: Create Pandoc Lua Filter for Semantic HTML
         run: |
@@ -109,8 +117,16 @@ jobs:
             fi
             final_json=$(echo "$final_json" | jq --arg slug "$notice_slug" --argjson hist "$history_json" '.[$slug].history = $hist')
           done
-          echo "$final_json" > site/notices.json
+          echo "$final_json" > notices.json
           echo "notices.json multilingua creato con successo."
+
+      # --- NUOVO: SEZIONE DI UPLOAD COMBINATA ---
+      # Uniamo l'hub e il file JSON in un unico artefatto per il deploy.
+      - name: Prepare Final Artifact for Deployment
+        run: |
+          mkdir -p final_site
+          tar -xvf artifact.tar -C final_site
+          mv notices.json final_site/notices.json
 
       # --- NUOVO: SEZIONE DI TEST ---
       # Questi passaggi verranno eseguiti SOLO SE NON siamo sul branch 'main'
@@ -119,7 +135,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: github-pages
-          path: ./site
+          path: ./final_site
           retention-days: 1
 
       - name: Setup Pages (Test/Develop Branches)
