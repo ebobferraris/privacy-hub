@@ -35,14 +35,6 @@ jobs:
       - name: Build Hub Website with MkDocs
         run: mkdocs build
 
-      # --- NUOVO STEP: Risolvi i Symlinks creando un archivio TAR ---
-      # Questo step sostituisce la necessità di un upload-artifact separato per l'Hub.
-      - name: Create Pages Artifact TAR with Symlinks Resolved
-        run: |
-          # Il flag 'h' o '--dereference' è la chiave. Dice a 'tar' di
-          # archiviare il file a cui punta il link, non il link stesso.
-          tar -hcvf artifact.tar --directory=site .
-
       # --- STAGE 2: Build the Headless notices.json File ---
       - name: Create Pandoc Lua Filter for Semantic HTML
         run: |
@@ -120,24 +112,34 @@ jobs:
           echo "$final_json" > notices.json
           echo "notices.json multilingua creato con successo."
 
-      # --- NUOVO: SEZIONE DI UPLOAD COMBINATA ---
-      # Uniamo l'hub e il file JSON in un unico artefatto per il deploy.
-      - name: Prepare Final Artifact for Deployment
+      # --- NUOVO STAGE 4: Risolvi i Symlinks e Prepara l'Artefatto Finale ---
+      - name: Resolve Symlinks and Prepare Final Artifact
         run: |
-          mkdir -p final_site
-          tar -xvf artifact.tar -C final_site
+          echo "Preparing final deployment directory..."
+          # Crea la cartella finale che conterrà il sito 'reale'
+          mkdir final_site
+          
+          # Il comando magico: 'cp -RL'.
+          # -R (o -r) significa copia ricorsivamente (cartelle e sottocartelle).
+          # -L significa "dereference": quando incontri un link simbolico,
+          # copia il file a cui punta, non il link stesso.
+          cp -RL site/* final_site/
+          
+          # Ora sposta il file JSON nella cartella finale
           mv notices.json final_site/notices.json
+          
+          echo "Final artifact ready in ./final_site"
 
-      # --- NUOVO: SEZIONE DI TEST ---
-      # Questi passaggi verranno eseguiti SOLO SE NON siamo sul branch 'main'
-      - name: Upload Artifact for Github Pages
+      # --- STAGE 5: Sezione di Test AGGIORNATA ---
+      # Ora carichiamo la cartella finale, che è garantita essere senza symlinks.
+      - name: Upload Artifact for GitHub Pages
         if: github.ref != 'refs/heads/main'
         uses: actions/upload-artifact@v4
         with:
           name: github-pages
-          path: ./final_site
+          path: ./final_site # <-- IMPORTANTE: usa la nuova cartella
           retention-days: 1
-
+      
       - name: Setup Pages (Test/Develop Branches)
         if: github.ref != 'refs/heads/main'
         uses: actions/configure-pages@v5

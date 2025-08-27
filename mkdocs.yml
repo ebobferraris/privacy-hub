@@ -8,7 +8,6 @@ docs_dir: notices
 
 theme:
   name: material
-  custom_dir: overrides
   language: it # Lingua di default dell'interfaccia del sito
   features:
     - navigation.tabs
