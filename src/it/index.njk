@@ -1,0 +1,75 @@
+---
+layout: base.njk
+title: "Privacy Center"
+lang: it
+---
+
+<div class="hero">
+  <h1 data-translate="privacyCenter">Privacy Center</h1>
+  <p data-translate="subtitle">qui puoi trovare le informative privacy di tutti i nostri prodotti</p>
+</div>
+
+<div class="search-section">
+  <input type="text" id="search-input" placeholder="Cerca informative..." class="search-input" data-translate="searchPlaceholder">
+  <button id="search-button" class="search-button" data-translate="search">Cerca</button>
+</div>
+
+<div id="notices-list" class="notices-grid">
+  <div class="notice-card">
+    <div class="app-logo">A</div>
+    <h3>App1</h3>
+    <p data-translate="apps.app1.description">Descrizione dell'applicazione 1</p>
+    <div class="notice-languages">
+      <a href="/notices/app1/it/" class="lang-link it">Italiano</a>
+      <a href="/notices/app1/en/" class="lang-link en">English</a>
+    </div>
+    <a href="/notices/app1/it/" class="view-details" data-translate="read">Leggi</a>
+  </div>
+
+  <div class="notice-card">
+    <div class="app-logo">A</div>
+    <h3>App2</h3>
+    <p data-translate="apps.app2.description">Descrizione dell'applicazione 2</p>
+    <div class="notice-languages">
+      <a href="/notices/app2/it/" class="lang-link it">Italiano</a>
+    </div>
+    <a href="/notices/app2/it/" class="view-details" data-translate="read">Leggi</a>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Initialize search functionality
+  initializeSearch();
+});
+
+function initializeSearch() {
+  const searchInput = document.getElementById('search-input');
+  const searchButton = document.getElementById('search-button');
+
+  if (searchInput && searchButton) {
+    // Add search functionality
+    searchButton.addEventListener('click', performSearch);
+    searchInput.addEventListener('input', performSearch);
+  }
+}
+
+function performSearch() {
+  const searchInput = document.getElementById('search-input');
+  if (!searchInput) return;
+
+  const searchTerm = searchInput.value.toLowerCase();
+  const cards = document.querySelectorAll('.notice-card');
+
+  cards.forEach(card => {
+    const title = card.querySelector('h3').textContent.toLowerCase();
+    const description = card.querySelector('p').textContent.toLowerCase();
+
+    if (title.includes(searchTerm) || description.includes(searchTerm)) {
+      card.style.display = 'block';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+}
+</script>

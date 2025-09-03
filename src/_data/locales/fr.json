@@ -1,0 +1,37 @@
+{
+  "ui": {
+    "privacyCenter": "Privacy Center",
+    "subtitle": "ici vous pouvez trouver les notices de confidentialité de tous nos produits",
+    "backToHome": "← Retour à l'accueil",
+    "selectLanguage": "Sélectionnez une langue",
+    "chooseLanguage": "Choisissez la langue dans laquelle vous souhaitez consulter l'avis de confidentialité {app} :",
+    "mainLanguage": "Langue principale",
+    "translation": "Traduction",
+    "viewInItalian": "Voir en italien",
+    "viewInEnglish": "Voir en anglais",
+    "searchPlaceholder": "Rechercher des avis...",
+    "search": "Rechercher",
+    "read": "Lire"
+  },
+  "warnings": {
+    "translationUnavailable": "Traduction non disponible",
+    "translationUnavailableDesc": "La traduction demandée n'est pas encore disponible. Vous trouverez ci-dessous les versions linguistiques actuellement disponibles pour cette notice."
+  },
+  "languages": {
+    "it": "Italien",
+    "en": "Anglais",
+    "fr": "Français",
+    "de": "Allemand",
+    "sl": "Slovène"
+  },
+  "apps": {
+    "app1": {
+      "name": "App1",
+      "description": "Description de l'application 1"
+    },
+    "app2": {
+      "name": "App2",
+      "description": "Description de l'application 2"
+    }
+  }
+}

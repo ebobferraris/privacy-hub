@@ -1,0 +1,37 @@
+{
+  "ui": {
+    "privacyCenter": "Privacy Center",
+    "subtitle": "here you can find the privacy notices of all our products",
+    "backToHome": "← Back to home",
+    "selectLanguage": "Select a language",
+    "chooseLanguage": "Choose the language in which you want to view the {app} privacy notice:",
+    "mainLanguage": "Main language",
+    "translation": "Translation",
+    "viewInItalian": "View in Italian",
+    "viewInEnglish": "View in English",
+    "searchPlaceholder": "Search notices...",
+    "search": "Search",
+    "read": "Read"
+  },
+  "warnings": {
+    "translationUnavailable": "Translation not available",
+    "translationUnavailableDesc": "The requested translation is not yet available. Below you can find the currently available language versions for this notice."
+  },
+  "languages": {
+    "it": "Italian",
+    "en": "English",
+    "fr": "French",
+    "de": "German",
+    "sl": "Slovenian"
+  },
+  "apps": {
+    "app1": {
+      "name": "App1",
+      "description": "Application 1 description"
+    },
+    "app2": {
+      "name": "App2",
+      "description": "Application 2 description"
+    }
+  }
+}

@@ -1,0 +1,80 @@
+---
+layout: base.njk
+title: "Privacy Center"
+lang: en
+---
+
+<div class="hero">
+  <h1>{{ 'ui.privacyCenter' | t(lang) }}</h1>
+  <p>{{ 'ui.subtitle' | t(lang) }}</p>
+</div>
+
+<div class="search-section">
+  <input type="text" id="search-input" placeholder="{{ 'ui.searchPlaceholder' | t(lang) }}" class="search-input">
+  <button id="search-button" class="search-button">{{ 'ui.search' | t(lang) }}</button>
+</div>
+
+<div id="notices-list" class="notices-grid">
+  {% for notice in notices %}
+  <div class="notice-card">
+    <div class="app-logo">{{ notice.name[0] | upper }}</div>
+    <h3>{{ notice.name }}</h3>
+    <p>{{ notice.description or 'Privacy notice' }}</p>
+    <div class="notice-languages">
+      {% for lang in notice.languages %}
+        {% set langName = lang | getLanguageName %}
+        <a href="/notices/{{ notice.id }}/{{ lang }}/" class="lang-link {{ lang }}">{{ langName }}</a>
+      {% endfor %}
+    </div>
+    {% set currentLangAvailable = false %}
+    {% for lang in notice.languages %}
+      {% if lang == 'en' %}
+        {% set currentLangAvailable = true %}
+      {% endif %}
+    {% endfor %}
+
+    {% if currentLangAvailable %}
+      <a href="/notices/{{ notice.id }}/en/" class="view-details">{{ 'ui.read' | t(lang) }}</a>
+    {% else %}
+      <a href="/notices/{{ notice.id }}/" class="view-details">{{ 'ui.read' | t(lang) }}</a>
+    {% endif %}
+  </div>
+  {% endfor %}
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Initialize search functionality
+  initializeSearch();
+});
+
+function initializeSearch() {
+  const searchInput = document.getElementById('search-input');
+  const searchButton = document.getElementById('search-button');
+
+  if (searchInput && searchButton) {
+    // Add search functionality
+    searchButton.addEventListener('click', performSearch);
+    searchInput.addEventListener('input', performSearch);
+  }
+}
+
+function performSearch() {
+  const searchInput = document.getElementById('search-input');
+  if (!searchInput) return;
+
+  const searchTerm = searchInput.value.toLowerCase();
+  const cards = document.querySelectorAll('.notice-card');
+
+  cards.forEach(card => {
+    const title = card.querySelector('h3').textContent.toLowerCase();
+    const description = card.querySelector('p').textContent.toLowerCase();
+
+    if (title.includes(searchTerm) || description.includes(searchTerm)) {
+      card.style.display = 'block';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+}
+</script>

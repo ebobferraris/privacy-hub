@@ -1,0 +1,37 @@
+{
+  "ui": {
+    "privacyCenter": "Privacy Center",
+    "subtitle": "hier finden Sie die Datenschutzhinweise aller unserer Produkte",
+    "backToHome": "← Zurück zur Startseite",
+    "selectLanguage": "Sprache auswählen",
+    "chooseLanguage": "Wählen Sie die Sprache, in der Sie die {app}-Datenschutzhinweis anzeigen möchten:",
+    "mainLanguage": "Hauptsprache",
+    "translation": "Übersetzung",
+    "viewInItalian": "Auf Italienisch anzeigen",
+    "viewInEnglish": "Auf Englisch anzeigen",
+    "searchPlaceholder": "Hinweise durchsuchen...",
+    "search": "Suchen",
+    "read": "Lesen"
+  },
+  "warnings": {
+    "translationUnavailable": "Übersetzung nicht verfügbar",
+    "translationUnavailableDesc": "Die angeforderte Übersetzung ist noch nicht verfügbar. Nachfolgend finden Sie die derzeit verfügbaren Sprachversionen für diese Mitteilung."
+  },
+  "languages": {
+    "it": "Italienisch",
+    "en": "Englisch",
+    "fr": "Französisch",
+    "de": "Deutsch",
+    "sl": "Slowenisch"
+  },
+  "apps": {
+    "app1": {
+      "name": "App1",
+      "description": "Beschreibung der Anwendung 1"
+    },
+    "app2": {
+      "name": "App2",
+      "description": "Beschreibung der Anwendung 2"
+    }
+  }
+}

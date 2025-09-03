@@ -1,0 +1,37 @@
+{
+  "ui": {
+    "privacyCenter": "Privacy Center",
+    "subtitle": "qui puoi trovare le informative privacy di tutti i nostri prodotti",
+    "backToHome": "← Torna alla home",
+    "selectLanguage": "Seleziona una lingua",
+    "chooseLanguage": "Scegli la lingua in cui desideri visualizzare l'informativa per {app}:",
+    "mainLanguage": "Lingua principale - Versione più recente",
+    "translation": "Traduzione",
+    "viewInItalian": "Visualizza in Italiano",
+    "viewInEnglish": "View in English",
+    "searchPlaceholder": "Cerca informative...",
+    "search": "Cerca",
+    "read": "Leggi"
+  },
+  "warnings": {
+    "translationUnavailable": "Traduzione non disponibile",
+    "translationUnavailableDesc": "La traduzione richiesta non è ancora disponibile. Di seguito trovi le versioni linguistiche attualmente disponibili per questa informativa."
+  },
+  "languages": {
+    "it": "Italiano",
+    "en": "English",
+    "fr": "Français",
+    "de": "Deutsch",
+    "sl": "Slovenščina"
+  },
+  "apps": {
+    "app1": {
+      "name": "App1",
+      "description": "Descrizione dell'applicazione 1"
+    },
+    "app2": {
+      "name": "App2",
+      "description": "Descrizione dell'applicazione 2"
+    }
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "ui": {
+    "privacyCenter": "Privacy Center",
+    "subtitle": "tukaj najdete obvestila o zasebnosti vseh naših izdelkov",
+    "backToHome": "← Nazaj na domačo stran",
+    "selectLanguage": "Izberite jezik",
+    "chooseLanguage": "Izberite jezik, v katerem želite pregledati obvestilo o zasebnosti {app}:",
+    "mainLanguage": "Glavni jezik",
+    "translation": "Prevod",
+    "viewInItalian": "Ogled v italijanščini",
+    "viewInEnglish": "Ogled v angleščini",
+    "searchPlaceholder": "Iskanje obvestil...",
+    "search": "Iskanje",
+    "read": "Preberi"
+  },
+  "warnings": {
+    "translationUnavailable": "Prevod ni na voljo",
+    "translationUnavailableDesc": "Zahtevani prevod še ni na voljo. Spodaj najdete trenutno razpoložljive jezikovne različice za to obvestilo."
+  },
+  "languages": {
+    "it": "Italijanščina",
+    "en": "Angleščina",
+    "fr": "Francoščina",
+    "de": "Nemščina",
+    "sl": "Slovenščina"
+  },
+  "apps": {
+    "app1": {
+      "name": "App1",
+      "description": "Opis aplikacije 1"
+    },
+    "app2": {
+      "name": "App2",
+      "description": "Opis aplikacije 2"
+    }
+  }
+}
