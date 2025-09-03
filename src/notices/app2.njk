@@ -5,7 +5,7 @@ title: "App2 - Privacy Notice"
 
 <div class="notice-header">
   <h1>App2 - <span data-translate="appTitle">Informativa Privacy</span></h1>
-  <a href="/" class="back-link"><span data-translate="backToHome">← Torna alla home</span></a>
+  <a href="{{ '/' | url }}" class="back-link"><span data-translate="backToHome">← Torna alla home</span></a>
 </div>
 
 <!-- Warning banner for unavailable translations -->
@@ -23,7 +23,7 @@ title: "App2 - Privacy Notice"
       <div class="language-card">
         <h3>Italiano</h3>
         <p><span data-translate="mainLanguage">Lingua principale - Versione più recente</span></p>
-        <a href="/notices/app2/it/" class="view-notice"><span data-translate="viewInItalian">Visualizza in Italiano</span></a>
+        <a href="{{ '/notices/app2/it/' | url }}" class="view-notice"><span data-translate="viewInItalian">Visualizza in Italiano</span></a>
       </div>
     </div>
   </div>
@@ -105,10 +105,10 @@ document.addEventListener('DOMContentLoaded', function() {
 function detectCurrentLanguage() {
   const path = window.location.pathname;
 
-  if (path.startsWith('/en/')) return 'en';
-  if (path.startsWith('/fr/')) return 'fr';
-  if (path.startsWith('/de/')) return 'de';
-  if (path.startsWith('/sl/')) return 'sl';
+  if (path.includes('/en/')) return 'en';
+  if (path.includes('/fr/')) return 'fr';
+  if (path.includes('/de/')) return 'de';
+  if (path.includes('/sl/')) return 'sl';
 
   return 'it'; // default
 }
@@ -131,10 +131,10 @@ function showTranslationWarningIfNeeded(lang) {
     // Show warning if user is not on Italian page but arrived from non-Italian homepage
     const referrer = document.referrer;
     const isFromNonItalianHomepage = referrer && (
-      referrer.includes('/en/') ||
-      referrer.includes('/fr/') ||
-      referrer.includes('/de/') ||
-      referrer.includes('/sl/')
+      referrer.includes('/privacy-hub/en/') ||
+      referrer.includes('/privacy-hub/fr/') ||
+      referrer.includes('/privacy-hub/de/') ||
+      referrer.includes('/privacy-hub/sl/')
     );
 
     if (isFromNonItalianHomepage && lang !== 'it') {
