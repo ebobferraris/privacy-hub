@@ -4,12 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% if title %}{{ title }} - {% endif %}PPE Corp.</title>
-  <link rel="stylesheet" href="{% if '/notices/' in page.inputPath and '/notices//' in (page.inputPath + '/') %}../../../css/main.css{% elif '/notices/' in page.inputPath %}../../css/main.css{% elif page.inputPath and page.inputPath != './src/index.njk' %}../css/main.css{% else %}./css/main.css{% endif %}">
+  <link rel="stylesheet" href="{% if '/notices/' in page.inputPath and (page.inputPath | split('/') | length > 4) %}../../../css/main.css{% elif '/notices/' in page.inputPath %}../../css/main.css{% elif page.inputPath and page.inputPath != './src/index.njk' %}../css/main.css{% else %}./css/main.css{% endif %}">
 </head>
 <body>
   <header class="header">
     <div class="container">
-      <h1><a href="{% if '/notices/' in page.inputPath and '/notices//' in (page.inputPath + '/') %}../../../{% elif '/notices/' in page.inputPath %}../../{% elif page.inputPath and page.inputPath != './src/index.njk' %}../{% else %}./{% endif %}">PPE Corp.</a></h1>
+      <h1><a href="{% if '/notices/' in page.inputPath and (page.inputPath | split('/') | length > 4) %}../../../{% elif '/notices/' in page.inputPath %}../../{% elif page.inputPath and page.inputPath != './src/index.njk' %}../{% else %}./{% endif %}">PPE Corp.</a></h1>
       <div id="language-dropdown" class="language-dropdown">
         <button class="language-button" onclick="toggleLanguageDropdown()">
           <span class="current-lang" data-translate="currentLang">
@@ -18,19 +18,19 @@
           <span class="dropdown-arrow">▼</span>
         </button>
         <div id="language-menu" class="language-menu">
-          <a href="{% if '/notices/' in page.inputPath and '/notices//' in (page.inputPath + '/') %}../../../{% elif '/notices/' in page.inputPath %}../../{% elif page.inputPath and page.inputPath != './src/index.njk' %}../{% else %}./{% endif %}" class="language-item" onclick="changeLanguage('it')">
+          <a href="{% if '/notices/' in page.inputPath and (page.inputPath | split('/') | length > 4) %}../../../{% elif '/notices/' in page.inputPath %}../../{% elif page.inputPath and page.inputPath != './src/index.njk' %}../{% else %}./{% endif %}" class="language-item" onclick="changeLanguage('it')">
             🇮🇹 <span data-translate="languages.it">Italiano</span> (IT)
           </a>
-          <a href="{% if '/notices/' in page.inputPath and '/notices//' in (page.inputPath + '/') %}../../../en/{% elif '/notices/' in page.inputPath %}../../en/{% elif page.inputPath and page.inputPath != './src/index.njk' %}../en/{% else %}./en/{% endif %}" class="language-item" onclick="changeLanguage('en')">
+          <a href="{% if '/notices/' in page.inputPath and (page.inputPath | split('/') | length > 4) %}../../../en/{% elif '/notices/' in page.inputPath %}../../en/{% elif page.inputPath and page.inputPath != './src/index.njk' %}../en/{% else %}./en/{% endif %}" class="language-item" onclick="changeLanguage('en')">
             🇬🇧 <span data-translate="languages.en">English</span> (EN)
           </a>
-          <a href="{% if '/notices/' in page.inputPath and '/notices//' in (page.inputPath + '/') %}../../../fr/{% elif '/notices/' in page.inputPath %}../../fr/{% elif page.inputPath and page.inputPath != './src/index.njk' %}../fr/{% else %}./fr/{% endif %}" class="language-item" onclick="changeLanguage('fr')">
+          <a href="{% if '/notices/' in page.inputPath and (page.inputPath | split('/') | length > 4) %}../../../fr/{% elif '/notices/' in page.inputPath %}../../fr/{% elif page.inputPath and page.inputPath != './src/index.njk' %}../fr/{% else %}./fr/{% endif %}" class="language-item" onclick="changeLanguage('fr')">
             🇫🇷 <span data-translate="languages.fr">Français</span> (FR)
           </a>
-          <a href="{% if '/notices/' in page.inputPath and '/notices//' in (page.inputPath + '/') %}../../../de/{% elif '/notices/' in page.inputPath %}../../de/{% elif page.inputPath and page.inputPath != './src/index.njk' %}../de/{% else %}./de/{% endif %}" class="language-item" onclick="changeLanguage('de')">
+          <a href="{% if '/notices/' in page.inputPath and (page.inputPath | split('/') | length > 4) %}../../../de/{% elif '/notices/' in page.inputPath %}../../de/{% elif page.inputPath and page.inputPath != './src/index.njk' %}../de/{% else %}./de/{% endif %}" class="language-item" onclick="changeLanguage('de')">
             🇩🇪 <span data-translate="languages.de">Deutsch</span> (DE)
           </a>
-          <a href="{% if '/notices/' in page.inputPath and '/notices//' in (page.inputPath + '/') %}../../../sl/{% elif '/notices/' in page.inputPath %}../../sl/{% elif page.inputPath and page.inputPath != './src/index.njk' %}../sl/{% else %}./sl/{% endif %}" class="language-item" onclick="changeLanguage('sl')">
+          <a href="{% if '/notices/' in page.inputPath and (page.inputPath | split('/') | length > 4) %}../../../sl/{% elif '/notices/' in page.inputPath %}../../sl/{% elif page.inputPath and page.inputPath != './src/index.njk' %}../sl/{% else %}./sl/{% endif %}" class="language-item" onclick="changeLanguage('sl')">
             🇸🇮 <span data-translate="languages.sl">Slovenščina</span> (SL)
           </a>
         </div>
@@ -50,7 +50,7 @@
     </div>
   </footer>
 
-  <script src="{% if '/notices/' in page.inputPath and '/notices//' in (page.inputPath + '/') %}../../../js/main.js{% elif '/notices/' in page.inputPath %}../../js/main.js{% elif page.inputPath and page.inputPath != './src/index.njk' %}../js/main.js{% else %}./js/main.js{% endif %}"></script>
-  <script src="{% if '/notices/' in page.inputPath and '/notices//' in (page.inputPath + '/') %}../../../js/translations.js{% elif '/notices/' in page.inputPath %}../../js/translations.js{% elif page.inputPath and page.inputPath != './src/index.njk' %}../js/translations.js{% else %}./js/translations.js{% endif %}"></script>
+  <script src="{% if '/notices/' in page.inputPath and (page.inputPath | split('/') | length > 4) %}../../../js/main.js{% elif '/notices/' in page.inputPath %}../../js/main.js{% elif page.inputPath and page.inputPath != './src/index.njk' %}../js/main.js{% else %}./js/main.js{% endif %}"></script>
+  <script src="{% if '/notices/' in page.inputPath and (page.inputPath | split('/') | length > 4) %}../../../js/translations.js{% elif '/notices/' in page.inputPath %}../../js/translations.js{% elif page.inputPath and page.inputPath != './src/index.njk' %}../js/translations.js{% else %}./js/translations.js{% endif %}"></script>
 </body>
 </html>
