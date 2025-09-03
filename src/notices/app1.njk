@@ -5,7 +5,7 @@ title: "App1 - Privacy Notice"
 
 <div class="notice-header">
   <h1>App1 - <span data-translate="appTitle">Informativa Privacy</span></h1>
-  <a href="{{ '/' | url }}" class="back-link"><span data-translate="backToHome">← Torna alla home</span></a>
+  <a href="../../" class="back-link"><span data-translate="backToHome">← Torna alla home</span></a>
 </div>
 
 <!-- Warning banner for unavailable translations -->
@@ -23,12 +23,12 @@ title: "App1 - Privacy Notice"
       <div class="language-card">
         <h3>Italiano</h3>
         <p><span data-translate="mainLanguage">Lingua principale</span></p>
-        <a href="{{ '/notices/app1/it/' | url }}" class="view-notice"><span data-translate="viewInItalian">Visualizza in Italiano</span></a>
+        <a href="./it/" class="view-notice"><span data-translate="viewInItalian">Visualizza in Italiano</span></a>
       </div>
       <div class="language-card">
         <h3>English</h3>
         <p><span data-translate="translation">Traduzione</span></p>
-        <a href="{{ '/notices/app1/en/' | url }}" class="view-notice"><span data-translate="viewInEnglish">View in English</span></a>
+        <a href="./en/" class="view-notice"><span data-translate="viewInEnglish">View in English</span></a>
       </div>
     </div>
   </div>
@@ -146,10 +146,10 @@ function showTranslationWarningIfNeeded(lang) {
     // Show warning if user is not on Italian page but arrived from non-Italian homepage
     const referrer = document.referrer;
     const isFromNonItalianHomepage = referrer && (
-      referrer.includes('/privacy-hub/en/') ||
-      referrer.includes('/privacy-hub/fr/') ||
-      referrer.includes('/privacy-hub/de/') ||
-      referrer.includes('/privacy-hub/sl/')
+      referrer.includes('/en/') ||
+      referrer.includes('/fr/') ||
+      referrer.includes('/de/') ||
+      referrer.includes('/sl/')
     );
 
     if (isFromNonItalianHomepage && lang !== 'it') {

@@ -4,12 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% if title %}{{ title }} - {% endif %}PPE Corp.</title>
-  <link rel="stylesheet" href="{{ '/css/main.css' | url }}">
+  <link rel="stylesheet" href="./css/main.css">
 </head>
 <body>
   <header class="header">
     <div class="container">
-      <h1><a href="{{ '/' | url }}">PPE Corp.</a></h1>
+      <h1><a href="{% if lang %}../{% else %}./{% endif %}">PPE Corp.</a></h1>
       <div id="language-dropdown" class="language-dropdown">
         <button class="language-button" onclick="toggleLanguageDropdown()">
           <span class="current-lang" data-translate="currentLang">
@@ -18,19 +18,19 @@
           <span class="dropdown-arrow">▼</span>
         </button>
         <div id="language-menu" class="language-menu">
-          <a href="{{ '/' | url }}" class="language-item" onclick="changeLanguage('it')">
+          <a href="{% if lang %}../{% else %}./{% endif %}" class="language-item" onclick="changeLanguage('it')">
             🇮🇹 <span data-translate="languages.it">Italiano</span> (IT)
           </a>
-          <a href="{{ '/en/' | url }}" class="language-item" onclick="changeLanguage('en')">
+          <a href="{% if lang %}../en/{% else %}./en/{% endif %}" class="language-item" onclick="changeLanguage('en')">
             🇬🇧 <span data-translate="languages.en">English</span> (EN)
           </a>
-          <a href="{{ '/fr/' | url }}" class="language-item" onclick="changeLanguage('fr')">
+          <a href="{% if lang %}../fr/{% else %}./fr/{% endif %}" class="language-item" onclick="changeLanguage('fr')">
             🇫🇷 <span data-translate="languages.fr">Français</span> (FR)
           </a>
-          <a href="{{ '/de/' | url }}" class="language-item" onclick="changeLanguage('de')">
+          <a href="{% if lang %}../de/{% else %}./de/{% endif %}" class="language-item" onclick="changeLanguage('de')">
             🇩🇪 <span data-translate="languages.de">Deutsch</span> (DE)
           </a>
-          <a href="{{ '/sl/' | url }}" class="language-item" onclick="changeLanguage('sl')">
+          <a href="{% if lang %}../sl/{% else %}./sl/{% endif %}" class="language-item" onclick="changeLanguage('sl')">
             🇸🇮 <span data-translate="languages.sl">Slovenščina</span> (SL)
           </a>
         </div>
@@ -50,7 +50,7 @@
     </div>
   </footer>
 
-  <script src="{{ '/js/main.js' | url }}"></script>
-  <script src="{{ '/js/translations.js' | url }}"></script>
+  <script src="./js/main.js"></script>
+  <script src="./js/translations.js"></script>
 </body>
 </html>
