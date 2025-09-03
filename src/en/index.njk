@@ -23,7 +23,7 @@ lang: en
     <div class="notice-languages">
       {% for lang in notice.languages %}
         {% set langName = lang | getLanguageName %}
-        <a href="/notices/{{ notice.id }}/{{ lang }}/" class="lang-link {{ lang }}">{{ langName }}</a>
+        <a href="../notices/{{ notice.id }}/{{ lang }}/" class="lang-link {{ lang }}">{{ langName }}</a>
       {% endfor %}
     </div>
     {% set currentLangAvailable = false %}
@@ -34,9 +34,9 @@ lang: en
     {% endfor %}
 
     {% if currentLangAvailable %}
-      <a href="/notices/{{ notice.id }}/en/" class="view-details">{{ 'ui.read' | t(lang) }}</a>
+      <a href="../notices/{{ notice.id }}/en/" class="view-details">{{ 'ui.read' | t(lang) }}</a>
     {% else %}
-      <a href="/notices/{{ notice.id }}/" class="view-details">{{ 'ui.read' | t(lang) }}</a>
+      <a href="../notices/{{ notice.id }}/" class="view-details">{{ 'ui.read' | t(lang) }}</a>
     {% endif %}
   </div>
   {% endfor %}
