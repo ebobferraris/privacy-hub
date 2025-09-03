@@ -4,7 +4,7 @@ on:
     branches:
       - main
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 concurrency:
@@ -16,18 +16,78 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: '18'
+
       - name: Install dependencies
         run: npm ci
+
+      - name: Check for notices changes
+        id: notices-changed
+        run: |
+          if git diff --name-only HEAD~1 | grep -q "^notices/"; then
+            echo "notices_changed=true" >> $GITHUB_OUTPUT
+            echo "📝 Notices content has changed, will process versions"
+          else
+            echo "notices_changed=false" >> $GITHUB_OUTPUT
+            echo "ℹ️ No notices changes detected, skipping version processing"
+          fi
+
+      - name: Process notice versions and check status
+        if: steps.notices-changed.outputs.notices_changed == 'true'
+        run: |
+          echo "🔄 Processing notice versions and checking status..."
+          npm run ci-prepare
+
+      - name: Check for version changes
+        id: versions-changed
+        if: steps.notices-changed.outputs.notices_changed == 'true'
+        run: |
+          if git diff --name-only | grep -q -E "\.(md|json)$"; then
+            echo "versions_changed=true" >> $GITHUB_OUTPUT
+            echo "📦 Version changes detected"
+          else
+            echo "versions_changed=false" >> $GITHUB_OUTPUT
+            echo "ℹ️ No version changes to commit"
+          fi
+
+      - name: Commit version changes
+        if: steps.versions-changed.outputs.versions_changed == 'true'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add notices/ src/notices/
+          git commit -m "🔄 Auto-process notice versions [skip ci]" || echo "No changes to commit"
+          git push
+
       - name: Build
         run: npm run build
+
+      - name: Validate build output
+        run: |
+          if [ ! -d "_site" ]; then
+            echo "❌ Build failed: _site directory not found"
+            exit 1
+          fi
+
+          if [ ! -f "_site/index.html" ]; then
+            echo "❌ Build failed: index.html not found in _site"
+            exit 1
+          fi
+
+          echo "✅ Build validation passed"
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: _site
+
   deploy:
     environment:
       name: github-pages

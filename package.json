@@ -8,7 +8,8 @@
     "dev": "eleventy --serve --watch",
     "version-manager": "node version-manager.js",
     "process-versions": "node version-manager.js --process-all",
-    "check-status": "node version-manager.js --check-status"
+    "check-status": "node version-manager.js --check-status",
+    "ci-prepare": "npm run process-versions && npm run check-status"
   },
   "devDependencies": {
     "@11ty/eleventy": "^2.0.1",
