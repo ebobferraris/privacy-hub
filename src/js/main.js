@@ -1,21 +1,55 @@
 // Main JavaScript for Privacy Center
 
-// Initialize the application
+// Utility functions for safe DOM access
+function safeQuerySelector(selector) {
+  try {
+    return document.querySelector(selector);
+  } catch (error) {
+    console.warn(`Error querying selector "${selector}":`, error);
+    return null;
+  }
+}
+
+function safeQuerySelectorAll(selector) {
+  try {
+    return document.querySelectorAll(selector);
+  } catch (error) {
+    console.warn(`Error querying selector "${selector}":`, error);
+    return [];
+  }
+}
+
+function safeGetElementById(id) {
+  try {
+    return document.getElementById(id);
+  } catch (error) {
+    console.warn(`Error getting element by ID "${id}":`, error);
+    return null;
+  }
+}
+
+// Initialize the application with error handling
 document.addEventListener('DOMContentLoaded', function() {
-  // Initialize language system
-  initializeLanguageSystem();
+  try {
+    // Initialize language system
+    initializeLanguageSystem();
 
-  // Handle version selector changes
-  const versionSelects = document.querySelectorAll('#version-select');
-  versionSelects.forEach(select => {
-    select.addEventListener('change', function(e) {
-      const version = e.target.value;
-      loadVersionContent(version);
+    // Handle version selector changes
+    const versionSelects = safeQuerySelectorAll('#version-select');
+    versionSelects.forEach(select => {
+      if (select) {
+        select.addEventListener('change', function(e) {
+          const version = e.target.value;
+          loadVersionContent(version);
+        });
+      }
     });
-  });
 
-  // Initialize search functionality
-  initializeSearch();
+    // Initialize search functionality
+    initializeSearch();
+  } catch (error) {
+    console.error('Error initializing application:', error);
+  }
 });
 
 // Language System Initialization
@@ -35,66 +69,93 @@ function initializeLanguageSystem() {
 
 // Update all translatable elements on the page
 function updatePageTranslations() {
-  // Update elements with data-translate attribute
-  document.querySelectorAll('[data-translate]').forEach(element => {
-    const key = element.getAttribute('data-translate');
-    const translation = window.langManager.getTranslation(key);
-    if (translation) {
-      if (element.tagName === 'INPUT' && element.type === 'placeholder') {
-        element.placeholder = translation;
-      } else {
-        element.textContent = translation;
+  try {
+    // Update elements with data-translate attribute
+    const translatableElements = safeQuerySelectorAll('[data-translate]');
+    translatableElements.forEach(element => {
+      if (element) {
+        const key = element.getAttribute('data-translate');
+        const translation = window.langManager.getTranslation(key);
+        if (translation) {
+          if (element.tagName === 'INPUT' && element.type === 'placeholder') {
+            element.placeholder = translation;
+          } else {
+            element.textContent = translation;
+          }
+        }
       }
-    }
-  });
+    });
 
-  // Update elements with data-translate-title attribute
-  document.querySelectorAll('[data-translate-title]').forEach(element => {
-    const key = element.getAttribute('data-translate-title');
-    const translation = window.langManager.getTranslation(key);
-    if (translation) {
-      element.title = translation;
-    }
-  });
+    // Update elements with data-translate-title attribute
+    const titleElements = safeQuerySelectorAll('[data-translate-title]');
+    titleElements.forEach(element => {
+      if (element) {
+        const key = element.getAttribute('data-translate-title');
+        const translation = window.langManager.getTranslation(key);
+        if (translation) {
+          element.title = translation;
+        }
+      }
+    });
+  } catch (error) {
+    console.error('Error updating page translations:', error);
+  }
 }
 
 
 
 // Search functionality
 function initializeSearch() {
-  const searchInput = document.getElementById('search-input');
-  const searchButton = document.getElementById('search-button');
+  try {
+    const searchInput = safeGetElementById('search-input');
+    const searchButton = safeGetElementById('search-button');
 
-  if (searchInput && searchButton) {
-    // Update placeholder with translation (if langManager is available)
-    if (typeof window !== 'undefined' && typeof window.langManager !== 'undefined') {
-      searchInput.placeholder = window.langManager.getTranslation('searchPlaceholder');
-      searchButton.textContent = window.langManager.getTranslation('search');
+    if (searchInput && searchButton) {
+      // Update placeholder with translation (if langManager is available)
+      if (typeof window !== 'undefined' && typeof window.langManager !== 'undefined') {
+        const placeholderText = window.langManager.getTranslation('searchPlaceholder');
+        const buttonText = window.langManager.getTranslation('search');
+        if (placeholderText) searchInput.placeholder = placeholderText;
+        if (buttonText) searchButton.textContent = buttonText;
+      }
+
+      // Add search functionality
+      searchButton.addEventListener('click', performSearch);
+      searchInput.addEventListener('input', performSearch);
     }
-
-    // Add search functionality
-    searchButton.addEventListener('click', performSearch);
-    searchInput.addEventListener('input', performSearch);
+  } catch (error) {
+    console.error('Error initializing search:', error);
   }
 }
 
 function performSearch() {
-  const searchInput = document.getElementById('search-input');
-  if (!searchInput) return;
+  try {
+    const searchInput = safeGetElementById('search-input');
+    if (!searchInput) return;
 
-  const searchTerm = searchInput.value.toLowerCase();
-  const cards = document.querySelectorAll('.notice-card');
+    const searchTerm = searchInput.value.toLowerCase();
+    const cards = safeQuerySelectorAll('.notice-card');
 
-  cards.forEach(card => {
-    const title = card.querySelector('h3').textContent.toLowerCase();
-    const description = card.querySelector('p').textContent.toLowerCase();
+    cards.forEach(card => {
+      if (card) {
+        const titleElement = card.querySelector('h3');
+        const descriptionElement = card.querySelector('p');
 
-    if (title.includes(searchTerm) || description.includes(searchTerm)) {
-      card.style.display = 'block';
-    } else {
-      card.style.display = 'none';
-    }
-  });
+        if (titleElement && descriptionElement) {
+          const title = titleElement.textContent.toLowerCase();
+          const description = descriptionElement.textContent.toLowerCase();
+
+          if (title.includes(searchTerm) || description.includes(searchTerm)) {
+            card.style.display = 'block';
+          } else {
+            card.style.display = 'none';
+          }
+        }
+      }
+    });
+  } catch (error) {
+    console.error('Error performing search:', error);
+  }
 }
 
 // Version content loading (placeholder for now)
@@ -131,61 +192,69 @@ function compareVersions(version1, version2) {
 
 // Language dropdown functionality
 function toggleLanguageDropdown() {
-  const menu = document.getElementById('language-menu');
+  const menu = safeGetElementById('language-menu');
   if (menu) {
     menu.classList.toggle('show');
   }
 }
 
 function changeLanguage(lang) {
-  // Store selected language in sessionStorage
-  sessionStorage.setItem('selectedLanguage', lang);
+  try {
+    // Store selected language in sessionStorage
+    sessionStorage.setItem('selectedLanguage', lang);
 
-  if (typeof window !== 'undefined' && typeof window.langManager !== 'undefined') {
-    // Update the current language in langManager
-    window.langManager.currentLang = lang;
+    if (typeof window !== 'undefined' && typeof window.langManager !== 'undefined') {
+      // Update the current language in langManager
+      window.langManager.currentLang = lang;
 
-    // Re-run translation updates
-    updatePageTranslations();
+      // Re-run translation updates
+      updatePageTranslations();
 
-    // Update current language display specifically
-    updateLanguageDropdownDisplay();
-  } else {
-    // Fallback: redirect to the language-specific URL
-    window.location.href = `/${lang}/`;
+      // Update current language display specifically
+      updateLanguageDropdownDisplay();
+    } else {
+      // Fallback: redirect to the language-specific URL
+      window.location.href = `/${lang}/`;
+    }
+  } catch (error) {
+    console.error('Error changing language:', error);
   }
 }
 
 // Update the language dropdown display based on sessionStorage
 function updateLanguageDropdownDisplay() {
-  const currentLangElement = document.querySelector('.current-lang');
-  if (!currentLangElement) return;
+  try {
+    const currentLangElement = safeQuerySelector('.current-lang');
+    if (!currentLangElement) return;
 
-  // Check sessionStorage first for user's selected language
-  let storedLang = sessionStorage.getItem('selectedLanguage');
+    // Check sessionStorage first for user's selected language
+    let storedLang = sessionStorage.getItem('selectedLanguage');
 
-  // If no stored language, set Italian as default
-  if (!storedLang) {
-    storedLang = 'it';
-    sessionStorage.setItem('selectedLanguage', 'it');
-  }
-
-  if (storedLang && typeof window !== 'undefined' && typeof window.langManager !== 'undefined') {
-    // Update langManager to use stored language
-    window.langManager.currentLang = storedLang;
-
-    // Update the display with the stored language
-    const currentLangText = window.langManager.getTranslation('currentLang');
-    if (currentLangText) {
-      currentLangElement.textContent = currentLangText;
+    // If no stored language, set Italian as default
+    if (!storedLang) {
+      storedLang = 'it';
+      sessionStorage.setItem('selectedLanguage', 'it');
     }
+
+    if (storedLang && typeof window !== 'undefined' && typeof window.langManager !== 'undefined') {
+      // Update langManager to use stored language
+      window.langManager.currentLang = storedLang;
+
+      // Update the display with the stored language
+      const currentLangText = window.langManager.getTranslation('currentLang');
+      if (currentLangText) {
+        currentLangElement.textContent = currentLangText;
+      }
+    }
+  } catch (error) {
+    console.error('Error updating language dropdown display:', error);
   }
 }
 
 // Close dropdown when clicking outside
 document.addEventListener('click', function(e) {
-  const dropdown = document.getElementById('language-dropdown');
-  const menu = document.getElementById('language-menu');
+  const dropdown = safeGetElementById('language-dropdown');
+  const menu = safeGetElementById('language-menu');
 
   if (dropdown && menu && !dropdown.contains(e.target)) {
     menu.classList.remove('show');
@@ -194,39 +263,45 @@ document.addEventListener('click', function(e) {
 
 // Show translation warning banner if needed
 function showTranslationWarning() {
-  const warningBanner = document.getElementById('translation-warning');
-  if (warningBanner) {
-    // Check if we arrived here because translation was not available
-    const urlParams = new URLSearchParams(window.location.search);
-    const showWarning = urlParams.get('warning') === 'translation-unavailable';
+  try {
+    const warningBanner = safeGetElementById('translation-warning');
+    if (warningBanner) {
+      // Check if we arrived here because translation was not available
+      const urlParams = new URLSearchParams(window.location.search);
+      const showWarning = urlParams.get('warning') === 'translation-unavailable';
 
-    // Also check referrer - if coming from homepage, might need warning
-    const referrer = document.referrer;
-    const isFromHomepage = referrer && (
-      referrer.includes('/en/') ||
-      referrer.includes('/fr/') ||
-      referrer.includes('/de/') ||
-      referrer.includes('/sl/')
-    );
+      // Also check referrer - if coming from homepage, might need warning
+      const referrer = document.referrer;
+      const isFromHomepage = referrer && (
+        referrer.includes('/en/') ||
+        referrer.includes('/fr/') ||
+        referrer.includes('/de/') ||
+        referrer.includes('/sl/')
+      );
 
-    if (showWarning || (isFromHomepage && !window.location.pathname.includes('/it/'))) {
-      warningBanner.style.display = 'block';
+      if (showWarning || (isFromHomepage && !window.location.pathname.includes('/it/'))) {
+        warningBanner.style.display = 'block';
 
-      // Scroll to warning after a short delay
-      setTimeout(() => {
-        warningBanner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      }, 500);
+        // Scroll to warning after a short delay
+        setTimeout(() => {
+          try {
+            warningBanner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          } catch (scrollError) {
+            console.warn('Error scrolling to warning banner:', scrollError);
+          }
+        }, 500);
+      }
     }
+  } catch (error) {
+    console.error('Error showing translation warning:', error);
   }
 }
 
 // Initialize warning banner on page load
 document.addEventListener('DOMContentLoaded', function() {
-  showTranslationWarning();
+  try {
+    showTranslationWarning();
+  } catch (error) {
+    console.error('Error showing translation warning:', error);
+  }
 });
-
-// Search functionality (if needed for dynamic search)
-function performSearch(query) {
-  // This could be enhanced for more complex search
-  console.log('Searching for:', query);
-}

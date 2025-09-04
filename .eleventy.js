@@ -24,6 +24,46 @@ module.exports = function(eleventyConfig) {
     return getAllNotices();
   });
 
+  // Add filter to get search parameter from URL
+  eleventyConfig.addFilter("getSearchParam", function(url) {
+    if (!url) return null;
+    try {
+      const urlObj = new URL(url, 'http://localhost');
+      return urlObj.searchParams.get('search') || null;
+    } catch (error) {
+      return null;
+    }
+  });
+
+  // Load all locale files
+  function loadLocales() {
+    const localesDir = path.join(__dirname, 'src', '_data', 'locales');
+    const locales = {};
+
+    if (!fs.existsSync(localesDir)) {
+      console.warn('Locales directory not found:', localesDir);
+      return locales;
+    }
+
+    const localeFiles = fs.readdirSync(localesDir).filter(file =>
+      file.endsWith('.json')
+    );
+
+    for (const file of localeFiles) {
+      const langCode = file.replace('.json', '');
+      const filePath = path.join(localesDir, file);
+
+      try {
+        const content = fs.readFileSync(filePath, 'utf-8');
+        locales[langCode] = JSON.parse(content);
+      } catch (error) {
+        console.warn(`Warning: Could not load locale file ${file}:`, error.message);
+      }
+    }
+
+    return locales;
+  }
+
   // Load localization data
   eleventyConfig.addGlobalData("locales", function() {
     return loadLocales();
@@ -87,7 +127,8 @@ module.exports = function(eleventyConfig) {
     templateFormats: ["md", "njk", "html"],
     markdownTemplateEngine: "njk",
     htmlTemplateEngine: "njk",
-    dataTemplateEngine: "njk"
+    dataTemplateEngine: "njk",
+    pathPrefix: "/privacy-hub/"
   };
 };
 
@@ -187,33 +228,4 @@ function getVersionsForLanguage(langPath) {
     if (b.isLatest) return 1;
     return b.version.localeCompare(a.version);
   });
-}
-
-// Load all locale files
-function loadLocales() {
-  const localesDir = path.join(__dirname, 'src', '_data', 'locales');
-  const locales = {};
-
-  if (!fs.existsSync(localesDir)) {
-    console.warn('Locales directory not found:', localesDir);
-    return locales;
-  }
-
-  const localeFiles = fs.readdirSync(localesDir).filter(file =>
-    file.endsWith('.json')
-  );
-
-  for (const file of localeFiles) {
-    const langCode = file.replace('.json', '');
-    const filePath = path.join(localesDir, file);
-
-    try {
-      const content = fs.readFileSync(filePath, 'utf-8');
-      locales[langCode] = JSON.parse(content);
-    } catch (error) {
-      console.warn(`Warning: Could not load locale file ${file}:`, error.message);
-    }
-  }
-
-  return locales;
 }

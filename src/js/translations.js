@@ -209,7 +209,9 @@ const translations = {
         description: "Opis aplikacije 2"
       }
     }
-  }
+  },
+
+
 };
 
 // Language detection and management
@@ -220,70 +222,117 @@ class LanguageManager {
   }
 
   detectLanguage() {
-    // Check sessionStorage first (user's selected language)
-    const sessionLang = sessionStorage.getItem('selectedLanguage');
-    if (sessionLang && this.translations[sessionLang]) {
-      return sessionLang;
-    }
+    try {
+      // Check sessionStorage first (user's selected language)
+      const sessionLang = sessionStorage.getItem('selectedLanguage');
+      if (sessionLang && this.translations[sessionLang]) {
+        return sessionLang;
+      }
 
-    // Check URL path
-    const pathLang = window.location.pathname.split('/')[1];
-    if (pathLang && this.translations[pathLang]) {
-      return pathLang;
-    }
+      // Check URL path
+      const pathLang = window.location.pathname.split('/')[1];
+      if (pathLang && this.translations[pathLang]) {
+        return pathLang;
+      }
 
-    // Check localStorage
-    const storedLang = localStorage.getItem('privacy-center-lang');
-    if (storedLang && this.translations[storedLang]) {
-      return storedLang;
-    }
+      // Check localStorage
+      const storedLang = localStorage.getItem('privacy-center-lang');
+      if (storedLang && this.translations[storedLang]) {
+        return storedLang;
+      }
 
-    // Check browser language
-    const browserLang = navigator.language.split('-')[0];
-    if (this.translations[browserLang]) {
-      return browserLang;
-    }
+      // Check browser language
+      if (typeof navigator !== 'undefined' && navigator.language) {
+        const browserLang = navigator.language.split('-')[0];
+        if (this.translations[browserLang]) {
+          return browserLang;
+        }
+      }
 
-    // Default to Italian
-    return 'it';
+      // Default to Italian
+      return 'it';
+    } catch (error) {
+      console.error('Error detecting language:', error);
+      return 'it'; // Fallback to default
+    }
   }
 
   setLanguage(lang) {
-    if (this.translations[lang]) {
-      this.currentLang = lang;
-      localStorage.setItem('privacy-center-lang', lang);
+    try {
+      if (this.translations[lang]) {
+        this.currentLang = lang;
 
-      // Update URL if not already correct
-      const currentPath = window.location.pathname;
-      const pathLang = currentPath.split('/')[1];
+        // Safely store in localStorage
+        if (typeof Storage !== 'undefined') {
+          try {
+            localStorage.setItem('privacy-center-lang', lang);
+          } catch (storageError) {
+            console.warn('Error storing language in localStorage:', storageError);
+          }
+        }
 
-      if (pathLang !== lang) {
-        const newPath = currentPath.replace(/^\/[^\/]*/, `/${lang}`);
-        window.location.href = newPath;
+        // Update URL if not already correct
+        if (typeof window !== 'undefined' && window.location) {
+          const currentPath = window.location.pathname;
+          const pathLang = currentPath.split('/')[1];
+
+          if (pathLang !== lang) {
+            const newPath = currentPath.replace(/^\/[^\/]*/, `/${lang}`);
+            window.location.href = newPath;
+          }
+        }
+
+        return true;
       }
-
-      return true;
+      return false;
+    } catch (error) {
+      console.error('Error setting language:', error);
+      return false;
     }
-    return false;
   }
 
   getTranslation(key, fallback = '') {
-    const keys = key.split('.');
-    let value = this.translations[this.currentLang];
+    try {
+      if (!key || typeof key !== 'string') {
+        console.warn('Invalid translation key:', key);
+        return fallback;
+      }
 
-    for (const k of keys) {
-      value = value && value[k];
+      const keys = key.split('.');
+      let value = this.translations[this.currentLang];
+
+      for (const k of keys) {
+        if (value && typeof value === 'object' && k in value) {
+          value = value[k];
+        } else {
+          value = undefined;
+          break;
+        }
+      }
+
+      return (typeof value === 'string') ? value : fallback;
+    } catch (error) {
+      console.error('Error getting translation for key:', key, error);
+      return fallback;
     }
-
-    return value || fallback;
   }
 
   getCurrentTranslations() {
-    return this.translations[this.currentLang];
+    try {
+      return this.translations[this.currentLang] || {};
+    } catch (error) {
+      console.error('Error getting current translations:', error);
+      return {};
+    }
   }
 
   getAvailableLanguages() {
-    return Object.keys(this.translations);
+    try {
+      return Object.keys(this.translations);
+    } catch (error) {
+      console.error('Error getting available languages:', error);
+      return ['it']; // Fallback to default
+    }
   }
 }
 
