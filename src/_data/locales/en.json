@@ -1,5 +1,7 @@
 {
   "ui": {
+    "companyName": "PPE Corp.",
+    "copyright": "All rights reserved.",
     "privacyCenter": "Privacy Center",
     "subtitle": "here you can find the privacy notices of all our products",
     "backToHome": "← Back to home",
@@ -11,18 +13,26 @@
     "viewInEnglish": "View in English",
     "searchPlaceholder": "Search notices...",
     "search": "Search",
-    "read": "Read"
+    "read": "Read",
+    "privacyNotice": "Privacy Notice",
+    "version": "Version",
+    "latest": "latest",
+    "whatsNew": "What's New in {version}",
+    "contentNotAvailable": "Notice content not available.",
+    "viewInFrench": "View in French",
+    "viewInGerman": "View in German",
+    "viewInSlovenian": "View in Slovenian"
   },
   "warnings": {
     "translationUnavailable": "Translation not available",
     "translationUnavailableDesc": "The requested translation is not yet available. Below you can find the currently available language versions for this notice."
   },
   "languages": {
-    "it": "Italian",
+    "it": "Italiano",
     "en": "English",
-    "fr": "French",
-    "de": "German",
-    "sl": "Slovenian"
+    "fr": "Français",
+    "de": "Deutsch",
+    "sl": "Slovenščina"
   },
   "apps": {
     "app1": {

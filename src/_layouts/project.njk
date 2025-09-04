@@ -1,0 +1,128 @@
+---
+layout: base.njk
+eleventyComputed:
+  title: "{{ (notices | findNotice(project)).name }} - {{ 'ui.privacyNotice' | t(lang) }}"
+  permalink: "/notices/{{ project }}/index.html"
+---
+
+{% set noticeId = project %}
+{% set currentLang = lang %}
+{% set noticeData = notices | findNotice(noticeId) %}
+
+<div class="notice-header">
+  <h1>{{ noticeData.name }} - {{ 'ui.privacyNotice' | t(lang) }}</h1>
+  <a href="{{ '/' | url }}" class="back-link">{{ 'ui.backToHome' | t(lang) }}</a>
+</div>
+
+<!-- Warning banner for unavailable translations -->
+<div id="translation-warning" class="translation-warning" style="display: none;">
+  <strong>{{ 'warnings.translationUnavailable' | t(lang) }}</strong>
+  <p>{{ 'warnings.translationUnavailableDesc' | t(lang) }}</p>
+</div>
+
+<div class="notice-content">
+  <div class="notice-placeholder">
+    <h2>{{ 'ui.selectLanguage' | t(lang) }}</h2>
+    <p>{{ 'ui.chooseLanguage' | t(lang, {app: noticeData.name}) }}</p>
+
+    <div class="languages-grid">
+      {% for langCode in noticeData.languages %}
+        {% set langName = langCode | getLanguageName %}
+        <div class="language-card">
+          <h3>{{ langName }}</h3>
+          <p>
+            {% if langCode == noticeData.main_language %}
+              {{ 'ui.mainLanguage' | t(lang) }}
+            {% else %}
+              {{ 'ui.translation' | t(lang) }}
+            {% endif %}
+          </p>
+          <a href="{{ ('/notices/' + project + '/' + langCode + '/') | url }}" class="view-notice">
+            {% if langCode == 'it' %}
+              {{ 'ui.viewInItalian' | t(lang) }}
+            {% elif langCode == 'en' %}
+              {{ 'ui.viewInEnglish' | t(lang) }}
+            {% elif langCode == 'fr' %}
+              {{ 'ui.viewInFrench' | t(lang) }}
+            {% elif langCode == 'de' %}
+              {{ 'ui.viewInGerman' | t(lang) }}
+            {% elif langCode == 'sl' %}
+              {{ 'ui.viewInSlovenian' | t(lang) }}
+            {% endif %}
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Get language from sessionStorage or detect from URL
+  const savedLang = sessionStorage.getItem('selectedLanguage');
+  const urlLang = detectCurrentLanguage();
+  const currentLang = savedLang || urlLang;
+
+  // If no stored language, set Italian as default
+  if (!savedLang) {
+    sessionStorage.setItem('selectedLanguage', 'it');
+  }
+
+  // Update all translatable elements
+  updateLanguageTexts(currentLang);
+
+  // Show translation warning if needed
+  showTranslationWarningIfNeeded(currentLang);
+});
+
+function detectCurrentLanguage() {
+  const path = window.location.pathname;
+
+  if (path.includes('/en/')) return 'en';
+  if (path.includes('/fr/')) return 'fr';
+  if (path.includes('/de/')) return 'de';
+  if (path.includes('/sl/')) return 'sl';
+
+  return 'it'; // default
+}
+
+function updateLanguageTexts(lang) {
+  // Update all elements with data-translate attribute
+  document.querySelectorAll('[data-translate]').forEach(element => {
+    const key = element.getAttribute('data-translate');
+    if (key) {
+      const translation = langManager.getTranslation(key);
+      if (translation) {
+        if (key === 'chooseLanguage') {
+          // Replace {app} placeholder with actual app name
+          const appName = element.closest('.notice-placeholder').querySelector('h1').textContent.split(' - ')[0];
+          element.textContent = translation.replace('{app}', appName);
+        } else {
+          element.textContent = translation;
+        }
+      }
+    }
+  });
+}
+
+function showTranslationWarningIfNeeded(lang) {
+  const warningBanner = document.getElementById('translation-warning');
+  if (warningBanner) {
+    // Show warning if user is not on Italian page but arrived from non-Italian homepage
+    const referrer = document.referrer;
+    const isFromNonItalianHomepage = referrer && (
+      referrer.includes('/en/') ||
+      referrer.includes('/fr/') ||
+      referrer.includes('/de/') ||
+      referrer.includes('/sl/')
+    );
+
+    if (isFromNonItalianHomepage && lang !== 'it') {
+      warningBanner.style.display = 'block';
+      setTimeout(() => {
+        warningBanner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 500);
+    }
+  }
+}
+</script>

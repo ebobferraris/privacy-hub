@@ -1,5 +1,7 @@
 {
   "ui": {
+    "companyName": "PPE Corp.",
+    "copyright": "Tous droits réservés.",
     "privacyCenter": "Privacy Center",
     "subtitle": "ici vous pouvez trouver les notices de confidentialité de tous nos produits",
     "backToHome": "← Retour à l'accueil",
@@ -11,18 +13,26 @@
     "viewInEnglish": "Voir en anglais",
     "searchPlaceholder": "Rechercher des avis...",
     "search": "Rechercher",
-    "read": "Lire"
+    "read": "Lire",
+    "privacyNotice": "Avis de confidentialité",
+    "version": "Version",
+    "latest": "dernière",
+    "whatsNew": "Nouveautés dans {version}",
+    "contentNotAvailable": "Contenu de l'avis non disponible.",
+    "viewInFrench": "Voir en français",
+    "viewInGerman": "Voir en allemand",
+    "viewInSlovenian": "Voir en slovène"
   },
   "warnings": {
     "translationUnavailable": "Traduction non disponible",
     "translationUnavailableDesc": "La traduction demandée n'est pas encore disponible. Vous trouverez ci-dessous les versions linguistiques actuellement disponibles pour cette notice."
   },
   "languages": {
-    "it": "Italien",
-    "en": "Anglais",
+    "it": "Italiano",
+    "en": "English",
     "fr": "Français",
-    "de": "Allemand",
-    "sl": "Slovène"
+    "de": "Deutsch",
+    "sl": "Slovenščina"
   },
   "apps": {
     "app1": {

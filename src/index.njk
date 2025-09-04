@@ -1,147 +1,38 @@
 ---
-layout: base.njk
-title: "Privacy Center"
+layout: index.njk
+lang: it
+permalink: /
 ---
 
-<div class="hero">
-  <h1>{{ 'ui.privacyCenter' | t(lang) }}</h1>
-  <p>{{ 'ui.subtitle' | t(lang) }}</p>
-</div>
-
-<!-- Progressive enhancement: Search form with server-side fallback -->
-<section class="search-section" aria-labelledby="search-heading">
-  <h2 id="search-heading" class="sr-only">Search Privacy Notices</h2>
-  <form method="GET" action="" class="search-form" role="search" aria-label="Search for privacy notices">
-    <label for="search-input" class="sr-only">Search term</label>
-    <input type="text"
-           name="search"
-           id="search-input"
-           placeholder="{{ 'ui.searchPlaceholder' | t(lang) }}"
-           class="search-input"
-           value="{{ page.url | getSearchParam | default('') }}"
-           aria-describedby="search-help">
-    <span id="search-help" class="sr-only">Enter keywords to search through privacy notices</span>
-    <button type="submit" id="search-button" class="search-button" aria-label="{{ 'ui.search' | t(lang) }} privacy notices">
-      {{ 'ui.search' | t(lang) }}
-    </button>
-  </form>
-</section>
-
-<section aria-labelledby="notices-heading">
-  <h2 id="notices-heading" class="sr-only">Available Privacy Notices</h2>
-  <div id="notices-list" class="notices-grid" role="grid" aria-label="Privacy notices grid">
-  {% set searchTerm = page.url | getSearchParam %}
-  {% for notice in notices %}
-  {% set shouldShow = true %}
-  {% if searchTerm %}
-    {% set titleMatch = notice.name | lower | includes(searchTerm | lower) %}
-    {% set descMatch = (notice.description or 'Privacy notice') | lower | includes(searchTerm | lower) %}
-    {% if not (titleMatch or descMatch) %}
-      {% set shouldShow = false %}
-    {% endif %}
-  {% endif %}
-
-  {% if shouldShow %}
-  <article class="notice-card" role="gridcell" aria-labelledby="notice-{{ notice.id }}-title">
-    <div class="app-logo" aria-hidden="true">{{ notice.name[0] | upper }}</div>
-    <h3 id="notice-{{ notice.id }}-title">{{ notice.name }}</h3>
-    <p>{{ notice.description or 'Privacy notice' }}</p>
-    <div class="notice-languages" role="group" aria-label="Available languages for {{ notice.name }}">
-      {% for lang in notice.languages %}
-        {% set langName = lang | getLanguageName %}
-        <a href="/privacy-hub/notices/{{ notice.id }}/{{ lang }}/"
-           class="lang-link {{ lang }}"
-           aria-label="Read {{ notice.name }} in {{ langName }}">{{ langName }}</a>
-      {% endfor %}
-    </div>
-    {% set currentLangAvailable = false %}
-    {% for lang in notice.languages %}
-      {% if lang == 'it' %}
-        {% set currentLangAvailable = true %}
-      {% endif %}
-    {% endfor %}
-
-    {% if currentLangAvailable %}
-      <a href="/privacy-hub/notices/{{ notice.id }}/it/"
-         class="view-details"
-         aria-label="Read {{ notice.name }} privacy notice">{{ 'ui.read' | t(lang) }}</a>
-    {% else %}
-      <a href="/privacy-hub/notices/{{ notice.id }}/"
-         class="view-details"
-         aria-label="Read {{ notice.name }} privacy notice">{{ 'ui.read' | t(lang) }}</a>
-    {% endif %}
-  </article>
-  {% endif %}
-  {% endfor %}
-
-  {% if searchTerm and notices %}
-    {% set visibleCount = 0 %}
-    {% for notice in notices %}
-      {% set titleMatch = notice.name | lower | includes(searchTerm | lower) %}
-      {% set descMatch = (notice.description or 'Privacy notice') | lower | includes(searchTerm | lower) %}
-      {% if titleMatch or descMatch %}
-        {% set visibleCount = visibleCount + 1 %}
-      {% endif %}
-    {% endfor %}
-
-    {% if visibleCount == 0 %}
-    <div class="no-results" role="status" aria-live="polite">
-      <p>No notices found matching "{{ searchTerm }}"</p>
-      <a href="/privacy-hub/" class="view-details" aria-label="Clear search and show all notices">Clear search</a>
-    </div>
-    {% endif %}
-  {% endif %}
-  </div>
-</section>
-
-<!-- Progressive enhancement: Client-side search initialization -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  // Check for saved language and redirect (only if no search query)
-  const urlParams = new URLSearchParams(window.location.search);
-  if (!urlParams.has('search')) {
-    const savedLang = sessionStorage.getItem('selectedLanguage');
-    if (savedLang && savedLang !== 'it') {
-      window.location.href = `/privacy-hub/${savedLang}/`;
-    } else {
-      window.location.href = '/privacy-hub/it/';
-    }
-  }
+  // Smart language detection and content switching
+  (function() {
+    // Get saved language or detect from browser
+    let currentLang = sessionStorage.getItem('selectedLanguage') ||
+                     navigator.language.split('-')[0] ||
+                     'it';
 
-  // Initialize search functionality for enhanced experience
-  initializeSearch();
+    // Ensure the detected language is supported
+    const supportedLanguages = {{ languages.available | map('code') | json }};
+    if (!supportedLanguages.includes(currentLang)) {
+      currentLang = '{{ languages.default }}';
+    }
+
+    // Save the detected language
+    sessionStorage.setItem('selectedLanguage', currentLang);
+
+    // If we're not on the root page, don't do anything
+    if (window.location.pathname !== '{{ "/" | url }}'.replace(/\/$/, '')) return;
+
+    // Update the page language if different from default
+    if (currentLang !== '{{ languages.default }}') {
+      // Redirect to the appropriate language page
+      const targetPath = '{{ "/" | url }}' + currentLang + '/';
+      window.location.href = targetPath;
+    }
+
+    // If we're on root with default language, show content normally
+  })();
 });
-
-function initializeSearch() {
-  const searchInput = document.getElementById('search-input');
-  const searchButton = document.getElementById('search-button');
-
-  if (searchInput && searchButton) {
-    // Add client-side search functionality
-    searchButton.addEventListener('click', function(e) {
-      e.preventDefault();
-      performSearch();
-    });
-    searchInput.addEventListener('input', performSearch);
-  }
-}
-
-function performSearch() {
-  const searchInput = document.getElementById('search-input');
-  if (!searchInput) return;
-
-  const searchTerm = searchInput.value.toLowerCase();
-  const cards = document.querySelectorAll('.notice-card');
-
-  cards.forEach(card => {
-    const title = card.querySelector('h3').textContent.toLowerCase();
-    const description = card.querySelector('p').textContent.toLowerCase();
-
-    if (title.includes(searchTerm) || description.includes(searchTerm)) {
-      card.style.display = 'block';
-    } else {
-      card.style.display = 'none';
-    }
-  });
-}
 </script>

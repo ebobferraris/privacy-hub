@@ -1,5 +1,7 @@
 {
   "ui": {
+    "companyName": "PPE Corp.",
+    "copyright": "Vse pravice pridržane.",
     "privacyCenter": "Privacy Center",
     "subtitle": "tukaj najdete obvestila o zasebnosti vseh naših izdelkov",
     "backToHome": "← Nazaj na domačo stran",
@@ -11,17 +13,25 @@
     "viewInEnglish": "Ogled v angleščini",
     "searchPlaceholder": "Iskanje obvestil...",
     "search": "Iskanje",
-    "read": "Preberi"
+    "read": "Preberi",
+    "privacyNotice": "Obvestilo o zasebnosti",
+    "version": "Različica",
+    "latest": "najnovejša",
+    "whatsNew": "Kaj je novega v {version}",
+    "contentNotAvailable": "Vsebina obvestila ni na voljo.",
+    "viewInFrench": "Ogled v francoščini",
+    "viewInGerman": "Ogled v nemščini",
+    "viewInSlovenian": "Ogled v slovenščini"
   },
   "warnings": {
     "translationUnavailable": "Prevod ni na voljo",
     "translationUnavailableDesc": "Zahtevani prevod še ni na voljo. Spodaj najdete trenutno razpoložljive jezikovne različice za to obvestilo."
   },
   "languages": {
-    "it": "Italijanščina",
-    "en": "Angleščina",
-    "fr": "Francoščina",
-    "de": "Nemščina",
+    "it": "Italiano",
+    "en": "English",
+    "fr": "Français",
+    "de": "Deutsch",
     "sl": "Slovenščina"
   },
   "apps": {

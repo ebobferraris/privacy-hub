@@ -1,17 +1,27 @@
 {
   "ui": {
+    "companyName": "PPE Corp.",
+    "copyright": "Tutti i diritti riservati.",
     "privacyCenter": "Privacy Center",
     "subtitle": "qui puoi trovare le informative privacy di tutti i nostri prodotti",
     "backToHome": "← Torna alla home",
     "selectLanguage": "Seleziona una lingua",
     "chooseLanguage": "Scegli la lingua in cui desideri visualizzare l'informativa per {app}:",
-    "mainLanguage": "Lingua principale - Versione più recente",
+    "mainLanguage": "Lingua principale",
     "translation": "Traduzione",
     "viewInItalian": "Visualizza in Italiano",
     "viewInEnglish": "View in English",
     "searchPlaceholder": "Cerca informative...",
     "search": "Cerca",
-    "read": "Leggi"
+    "read": "Leggi",
+    "privacyNotice": "Informativa Privacy",
+    "version": "Versione",
+    "latest": "più recente",
+    "whatsNew": "Novità nella versione {version}",
+    "contentNotAvailable": "Contenuto dell'informativa non disponibile.",
+    "viewInFrench": "Visualizza in Francese",
+    "viewInGerman": "Visualizza in Tedesco",
+    "viewInSlovenian": "Visualizza in Sloveno"
   },
   "warnings": {
     "translationUnavailable": "Traduzione non disponibile",

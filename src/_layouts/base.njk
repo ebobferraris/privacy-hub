@@ -3,13 +3,13 @@
   <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% if title %}{{ title }} - {% endif %}PPE Corp.</title>
-  <link rel="stylesheet" href="/privacy-hub/css/main.css">
+  <title>{% if title %}{{ title }} - {% endif %}{{ 'ui.companyName' | t(lang) }}</title>
+  <link rel="stylesheet" href="{{ '/css/main.css' | url }}">
 </head>
 <body>
   <header class="header">
     <div class="container">
-      <h1><a href="/privacy-hub/">PPE Corp.</a></h1>
+      <h1><a href="{{ '/' | url }}">{{ 'ui.companyName' | t(lang) }}</a></h1>
       <div id="language-dropdown" class="language-dropdown">
         <button class="language-button" onclick="toggleLanguageDropdown()">
           <span class="current-lang" data-translate="currentLang">
@@ -18,20 +18,20 @@
           <span class="dropdown-arrow">▼</span>
         </button>
         <div id="language-menu" class="language-menu">
-          <a href="/privacy-hub/" class="language-item" onclick="changeLanguage('it')">
-            🇮🇹 Italiano (IT)
+          <a href="{{ '/' | url }}" class="language-item" onclick="changeLanguage('it')">
+            🇮🇹 {{ 'languages.it' | t(lang) }} (IT)
           </a>
-          <a href="/privacy-hub/en/" class="language-item" onclick="changeLanguage('en')">
-            🇬🇧 English (EN)
+          <a href="{{ '/en/' | url }}" class="language-item" onclick="changeLanguage('en')">
+            🇬🇧 {{ 'languages.en' | t(lang) }} (EN)
           </a>
-          <a href="/privacy-hub/fr/" class="language-item" onclick="changeLanguage('fr')">
-            🇫🇷 Français (FR)
+          <a href="{{ '/fr/' | url }}" class="language-item" onclick="changeLanguage('fr')">
+            🇫🇷 {{ 'languages.fr' | t(lang) }} (FR)
           </a>
-          <a href="/privacy-hub/de/" class="language-item" onclick="changeLanguage('de')">
-            🇩🇪 Deutsch (DE)
+          <a href="{{ '/de/' | url }}" class="language-item" onclick="changeLanguage('de')">
+            🇩🇪 {{ 'languages.de' | t(lang) }} (DE)
           </a>
-          <a href="/privacy-hub/sl/" class="language-item" onclick="changeLanguage('sl')">
-            🇸🇮 Slovenščina (SL)
+          <a href="{{ '/sl/' | url }}" class="language-item" onclick="changeLanguage('sl')">
+            🇸🇮 {{ 'languages.sl' | t(lang) }} (SL)
           </a>
         </div>
       </div>
@@ -46,11 +46,11 @@
 
   <footer class="footer">
     <div class="container">
-      <p>&copy; 2025 PPE Corporation. Tutti i diritti riservati.</p>
+      <p>&copy; 2025 {{ 'ui.companyName' | t(lang) }}. {{ 'ui.copyright' | t(lang) }}</p>
     </div>
   </footer>
 
-  <script src="/privacy-hub/js/main.js"></script>
-  <script src="/privacy-hub/js/translations.js"></script>
+  <script src="{{ '/js/main.js' | url }}"></script>
+  <script src="{{ '/js/translations.js' | url }}"></script>
 </body>
 </html>

@@ -24,6 +24,42 @@ module.exports = function(eleventyConfig) {
     return getAllNotices();
   });
 
+
+
+  // Add project pages
+  eleventyConfig.addCollection("projects", function(collectionApi) {
+    const notices = getAllNotices();
+    return notices.map(notice => ({
+      ...notice,
+      url: `/notices/${notice.id}/`,
+      data: { project: notice.id, layout: 'project.njk' }
+    }));
+  });
+
+  // Add notice pages
+  eleventyConfig.addCollection("allNotices", function(collectionApi) {
+    const notices = getAllNotices();
+    const allNotices = [];
+
+    for (const notice of notices) {
+      for (const lang of Object.keys(notice.available_languages)) {
+        for (const version of notice.available_languages[lang]) {
+          allNotices.push({
+            project: notice.id,
+            lang: lang,
+            version: version.version,
+            isLatest: version.isLatest,
+            content: version.content,
+            url: version.isLatest ? `/notices/${notice.id}/${lang}/` : `/notices/${notice.id}/${lang}/${version.version}/`,
+            data: { layout: 'notice.njk', project: notice.id, lang: lang }
+          });
+        }
+      }
+    }
+
+    return allNotices;
+  });
+
   // Add filter to get search parameter from URL
   eleventyConfig.addFilter("getSearchParam", function(url) {
     if (!url) return null;
@@ -69,10 +105,65 @@ module.exports = function(eleventyConfig) {
     return loadLocales();
   });
 
+  // Load languages data
+  eleventyConfig.addGlobalData("languages", function() {
+    return require('./src/_data/languages.json');
+  });
+
   // Add custom filters
   eleventyConfig.addFilter("getLanguageName", function(code) {
     const names = { it: 'Italiano', en: 'English', fr: 'Français', de: 'Deutsch', es: 'Español' };
     return names[code] || code.toUpperCase();
+  });
+
+  // Filter to find item in array by property
+  eleventyConfig.addFilter("find", function(array, key, value) {
+    if (!Array.isArray(array)) return null;
+    return array.find(item => item[key] === value);
+  });
+
+  // Filter to get property from object
+  eleventyConfig.addFilter("get", function(obj, key) {
+    if (!obj || typeof obj !== 'object') return null;
+    return obj[key];
+  });
+
+  // Filter to map array to property values
+  eleventyConfig.addFilter("map", function(array, key) {
+    if (!Array.isArray(array)) return [];
+    return array.map(item => item[key]);
+  });
+
+  // Filter to convert to JSON string
+  eleventyConfig.addFilter("json", function(value) {
+    return JSON.stringify(value);
+  });
+
+  // Filter to find a notice by ID
+  eleventyConfig.addFilter("findNotice", function(notices, noticeId) {
+    return notices.find(notice => notice.id === noticeId);
+  });
+
+  // Filter to find the appropriate version based on URL
+  eleventyConfig.addFilter("findVersion", function(versions, url) {
+    if (!versions || versions.length === 0) return null;
+
+    // Check if URL contains a specific version
+    const versionMatch = url.match(/\/v([\d\.]+)\//);
+    if (versionMatch) {
+      const requestedVersion = 'v' + versionMatch[1];
+      return versions.find(v => v.version === requestedVersion) || versions.find(v => v.isLatest);
+    }
+
+    // Default to latest
+    return versions.find(v => v.isLatest) || versions[0];
+  });
+
+  // Filter to find the latest version number
+  eleventyConfig.addFilter("findLatestVersion", function(versions) {
+    if (!versions || versions.length === 0) return null;
+    const latest = versions.find(v => v.isLatest);
+    return latest ? latest.version : null;
   });
 
   // Translation filter
@@ -115,6 +206,11 @@ module.exports = function(eleventyConfig) {
   let markdownLib = markdownIt(options).use(markdownItAnchor);
 
   eleventyConfig.setLibrary("md", markdownLib);
+
+  // Add markdown filter for templates
+  eleventyConfig.addFilter("markdown", function(content) {
+    return markdownLib.render(content || '');
+  });
 
   return {
     dir: {
@@ -193,11 +289,12 @@ function getVersionsForLanguage(langPath) {
   const latestPath = path.join(langPath, 'latest.md');
   if (fs.existsSync(latestPath)) {
     const content = fs.readFileSync(latestPath, 'utf-8');
-    const { data } = matter(content);
+    const { data, content: body } = matter(content);
     versions.push({
       version: data.version || 'latest',
       isLatest: true,
       path: latestPath,
+      content: body,
       ...data
     });
   }
@@ -212,11 +309,12 @@ function getVersionsForLanguage(langPath) {
     const noticePath = path.join(langPath, versionDir, 'notice.md');
     if (fs.existsSync(noticePath)) {
       const content = fs.readFileSync(noticePath, 'utf-8');
-      const { data } = matter(content);
+      const { data, content: body } = matter(content);
       versions.push({
         version: data.version || versionDir,
         isLatest: false,
         path: noticePath,
+        content: body,
         ...data
       });
     }

@@ -1,0 +1,94 @@
+---
+layout: base.njk
+eleventyComputed:
+  title: "{{ (notices | findNotice(project)).name }} - {{ 'ui.privacyNotice' | t(lang) }} ({{ 'languages.' + lang | t(lang) }})"
+  permalink: "/notices/{{ project }}/{{ lang }}/index.html"
+---
+
+{% set noticeId = project %}
+{% set currentLang = lang %}
+{% set noticeData = notices | findNotice(noticeId) %}
+
+{# Check if the requested language version exists #}
+{% if not noticeData.available_languages[currentLang] %}
+  {# Language version doesn't exist, redirect to project page #}
+  <script>
+    window.location.href = '{{ ("/notices/" + project + "/") | url }}';
+  </script>
+  <p>Redirecting to project page...</p>
+{% endif %}
+
+{% set langVersions = noticeData.available_languages[currentLang] %}
+{% set currentVersion = langVersions | findVersion(page.url) %}
+{% set noticeContent = currentVersion.content %}
+
+<div class="notice-header">
+  <h1>{{ noticeData.name }} - {{ 'ui.privacyNotice' | t(lang) }} ({{ 'languages.' + lang | t(lang) }})</h1>
+  <a href="{{ '/' | url }}" class="back-link">{{ 'ui.backToHome' | t(lang) }}</a>
+</div>
+
+<div class="version-controls">
+  <div class="version-selector">
+    <label for="version-select">{{ 'ui.version' | t(lang) }}:</label>
+    <select id="version-select">
+      {% set latestVersion = null %}
+      {% for version in langVersions %}
+        {% if version.isLatest %}
+          {% set latestVersion = version.version %}
+          <option value="{{ version.version }}" selected>
+            {{ version.version }} ({{ 'ui.latest' | t(lang) }})
+          </option>
+        {% endif %}
+      {% endfor %}
+      {% for version in langVersions %}
+        {% if not version.isLatest and version.version != latestVersion %}
+          <option value="{{ version.version }}">
+            {{ version.version }}
+          </option>
+        {% endif %}
+      {% endfor %}
+    </select>
+  </div>
+</div>
+
+{% if currentVersion.whats_new %}
+<div class="whats-new-box">
+  <h3>{{ 'ui.whatsNew' | t(lang, {version: currentVersion.version}) }}</h3>
+  <div class="whats-new-content">
+    {{ currentVersion.whats_new | markdown | safe }}
+  </div>
+</div>
+{% endif %}
+
+<div class="notice-content">
+  <div id="notice-content">
+    {% if noticeContent %}
+      {{ noticeContent | markdown | safe }}
+    {% else %}
+      <p>{{ 'ui.contentNotAvailable' | t(lang) }}</p>
+    {% endif %}
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Get language from sessionStorage or use langManager
+  const savedLang = sessionStorage.getItem('selectedLanguage') || langManager.currentLang;
+
+  // Update all translatable elements
+  document.querySelectorAll('[data-translate]').forEach(element => {
+    const key = element.getAttribute('data-translate');
+    const translation = langManager.getTranslation(key);
+    if (translation) {
+      element.textContent = translation;
+    }
+  });
+
+  // Version selector functionality
+  const versionSelect = document.getElementById('version-select');
+  versionSelect.addEventListener('change', function(e) {
+    console.log('Selected version:', e.target.value);
+    // In a future enhancement, this could load different versions
+  });
+});
+</script>

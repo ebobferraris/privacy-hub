@@ -1,3 +1,8 @@
+# GitHub Actions workflow for deploying Privacy Hub to GitHub Pages
+# Templates are organized in src/_layouts/ directory:
+# - notice.njk: Unified template for individual notice pages
+# - project.njk: Unified template for project overview pages
+# - base.njk: Base layout template
 name: Deploy to GitHub Pages
 on:
   push:
@@ -62,7 +67,8 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add notices/ src/notices/
+          # Only commit notices/ directory - templates are now in _layouts/ and don't need committing
+          git add notices/
           git commit -m "🔄 Auto-process notice versions [skip ci]" || echo "No changes to commit"
           git push
 
@@ -81,7 +87,19 @@ jobs:
             exit 1
           fi
 
-          echo "✅ Build validation passed"
+          # Check for unified template generated pages
+          if [ ! -d "_site/notices" ]; then
+            echo "❌ Build failed: notices directory not found in _site"
+            exit 1
+          fi
+
+          # Verify at least one notice page was generated
+          if ! find "_site/notices" -name "*.html" | grep -q .; then
+            echo "❌ Build failed: no notice pages generated"
+            exit 1
+          fi
+
+          echo "✅ Build validation passed - unified template system working"
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

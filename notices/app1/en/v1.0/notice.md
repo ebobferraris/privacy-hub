@@ -5,6 +5,11 @@ version: "1.0"
 last_updated: "2025-01-01"
 based_on_version: "1.0"
 language: "en"
+whats_new: |
+  - Enhanced data security measures with end-to-end encryption
+  - Added user consent management for data processing
+  - Improved transparency in data collection practices
+  - New contact options for privacy inquiries
 ---
 
 # Privacy Notice
