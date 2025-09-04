@@ -538,6 +538,7 @@ body {
   }
 
   .language-dropdown {
+    position: relative;
     flex-shrink: 0;  /* Prevent dropdown from shrinking */
   }
 
@@ -579,7 +580,7 @@ body {
   }
 
   .language-menu {
-    position: static;
+    position: absolute;
     box-shadow: none;
     background: rgba(255,255,255,0.95);
     margin-top: 0.5rem;
