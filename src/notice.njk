@@ -1,0 +1,16 @@
+---
+layout: notice.njk
+
+pagination:
+  data: collections.allNotices
+  size: 1
+  alias: notice
+
+permalink: false
+
+eleventyComputed:
+  title: "{{ notice.project }} - {{ notice.lang | getLanguageName }}"
+  permalink: "{{ notice.url }}"
+---
+
+{{ notice.content | markdown }}
