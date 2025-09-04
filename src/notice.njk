@@ -11,6 +11,8 @@ permalink: false
 eleventyComputed:
   title: "{{ notice.project }} - {{ notice.lang | getLanguageName }}"
   permalink: "{{ notice.url }}"
+  project: "{{ notice.project }}"
+  lang: "{{ notice.lang }}"
 ---
 
 {{ notice.content | markdown }}
