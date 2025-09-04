@@ -77,24 +77,24 @@ jobs:
 
       - name: Validate build output
         run: |
-          if [ ! -d "_site" ]; then
-            echo "❌ Build failed: _site directory not found"
+          if [ ! -d "_site/privacy-hub" ]; then
+            echo "❌ Build failed: privacy-hub directory not found in _site"
             exit 1
           fi
 
-          if [ ! -f "_site/index.html" ]; then
-            echo "❌ Build failed: index.html not found in _site"
+          if [ ! -f "_site/privacy-hub/index.html" ]; then
+            echo "❌ Build failed: index.html not found in _site/privacy-hub"
             exit 1
           fi
 
           # Check for unified template generated pages
-          if [ ! -d "_site/notices" ]; then
-            echo "❌ Build failed: notices directory not found in _site"
+          if [ ! -d "_site/privacy-hub/notices" ]; then
+            echo "❌ Build failed: notices directory not found in _site/privacy-hub"
             exit 1
           fi
 
           # Verify at least one notice page was generated
-          if ! find "_site/notices" -name "*.html" | grep -q .; then
+          if ! find "_site/privacy-hub/notices" -name "*.html" | grep -q .; then
             echo "❌ Build failed: no notice pages generated"
             exit 1
           fi
