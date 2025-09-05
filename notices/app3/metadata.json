@@ -1,9 +1,9 @@
 {
   "name": "App3",
   "description": "Description of App3",
-  "languages": [
-    "it"
-  ],
+  "languages": {
+    "it": ["1.0"]
+  },
   "main_language": "it",
   "versions": [
     "1.0"

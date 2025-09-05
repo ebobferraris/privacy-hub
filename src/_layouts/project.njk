@@ -10,19 +10,19 @@ eleventyComputed:
 {% set noticeData = notices | findNotice(noticeId) %}
 
 <div class="notice-header">
-  <h1>{{ noticeData.name }} - <span data-translate="ui.privacyNotice">{{ 'ui.privacyNotice' | t('it') }}</span></h1>
-  <a href="{{ '/' | url }}" class="back-link" data-translate="ui.backToHome">{{ 'ui.backToHome' | t('it') }}</a>
+  <h1>{{ noticeData.name }} - <span data-translate="ui.privacyNotice">{{ 'ui.privacyNotice' | t(lang) }}</span></h1>
+  <a href="{{ '/' | url }}" class="back-link" data-translate="ui.backToHome">{{ 'ui.backToHome' | t(lang) }}</a>
 </div>
 
 <!-- Warning banner for unavailable translations -->
 <div id="translation-warning" class="translation-warning" style="display: none;">
-  <strong data-translate="warnings.translationUnavailable">{{ 'warnings.translationUnavailable' | t('it') }}</strong>
-  <p data-translate="warnings.translationUnavailableDesc">{{ 'warnings.translationUnavailableDesc' | t('it') }}</p>
+  <strong data-translate="warnings.translationUnavailable">{{ 'warnings.translationUnavailable' | t(lang) }}</strong>
+  <p data-translate="warnings.translationUnavailableDesc">{{ 'warnings.translationUnavailableDesc' | t(lang) }}</p>
 </div>
 
 <div class="notice-content">
   <div class="notice-placeholder">
-    <h2 data-translate="ui.selectLanguage">{{ 'ui.selectLanguage' | t('it') }}</h2>
+    <h2 data-translate="ui.selectLanguage">{{ 'ui.selectLanguage' | t(lang) }}</h2>
     <p data-translate="ui.chooseLanguage">{{ 'ui.chooseLanguage' | t('it', {app: noticeData.name}) }}</p>
 
     <div class="languages-grid">
@@ -36,22 +36,22 @@ eleventyComputed:
           <p data-translate="ui.translation">
           {% endif %}
             {% if langCode == noticeData.main_language %}
-              {{ 'ui.mainLanguage' | t('it') }}
+              {{ 'ui.mainLanguage' | t(lang) }}
             {% else %}
-              {{ 'ui.translation' | t('it') }}
+              {{ 'ui.translation' | t(lang) }}
             {% endif %}
           </p>
           <a href="{{ ('/notices/' + project + '/' + langCode + '/') | url }}" class="view-notice" data-translate="ui.viewIn{{ langCode | capitalize }}">
             {% if langCode == 'it' %}
-              {{ 'ui.viewInItalian' | t('it') }}
+              {{ 'ui.viewInItalian' | t(lang) }}
             {% elif langCode == 'en' %}
-              {{ 'ui.viewInEnglish' | t('it') }}
+              {{ 'ui.viewInEnglish' | t(lang) }}
             {% elif langCode == 'fr' %}
-              {{ 'ui.viewInFrench' | t('it') }}
+              {{ 'ui.viewInFrench' | t(lang) }}
             {% elif langCode == 'de' %}
-              {{ 'ui.viewInGerman' | t('it') }}
+              {{ 'ui.viewInGerman' | t(lang) }}
             {% elif langCode == 'sl' %}
-              {{ 'ui.viewInSlovenian' | t('it') }}
+              {{ 'ui.viewInSlovenian' | t(lang) }}
             {% endif %}
           </a>
         </div>

@@ -19,19 +19,19 @@
         </button>
         <div id="language-menu" class="language-menu">
           <a href="{{ '/' | url }}" class="language-item" onclick="changeLanguage('it')">
-            🇮🇹 {{ 'languages.it' | t(lang) }} (IT)
+            🇮🇹 {{ 'it' | getLanguageName }} (IT)
           </a>
           <a href="{{ '/en/' | url }}" class="language-item" onclick="changeLanguage('en')">
-            🇬🇧 {{ 'languages.en' | t(lang) }} (EN)
+            🇬🇧 {{ 'en' | getLanguageName }} (EN)
           </a>
           <a href="{{ '/fr/' | url }}" class="language-item" onclick="changeLanguage('fr')">
-            🇫🇷 {{ 'languages.fr' | t(lang) }} (FR)
+            🇫🇷 {{ 'fr' | getLanguageName }} (FR)
           </a>
           <a href="{{ '/de/' | url }}" class="language-item" onclick="changeLanguage('de')">
-            🇩🇪 {{ 'languages.de' | t(lang) }} (DE)
+            🇩🇪 {{ 'de' | getLanguageName }} (DE)
           </a>
           <a href="{{ '/sl/' | url }}" class="language-item" onclick="changeLanguage('sl')">
-            🇸🇮 {{ 'languages.sl' | t(lang) }} (SL)
+            🇸🇮 {{ 'sl' | getLanguageName }} (SL)
           </a>
         </div>
       </div>

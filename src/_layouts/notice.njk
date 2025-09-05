@@ -1,7 +1,7 @@
 ---
 layout: base.njk
 eleventyComputed:
-  title: "{{ (notices | findNotice(project)).name }} - {{ 'ui.privacyNotice' | t(lang) }} ({{ 'languages.' + lang | t(lang) }})"
+  title: "{{ (notices | findNotice(project)).name }} - {{ 'ui.privacyNotice' | t(lang) }} ({{ lang | getLanguageName }})"
   permalink: "/notices/{{ project }}/{{ lang }}/index.html"
 ---
 
@@ -23,8 +23,8 @@ eleventyComputed:
 {% set noticeContent = currentVersion.content %}
 
 <div class="notice-header">
-  <h1>{{ noticeData.name }} - {{ 'ui.privacyNotice' | t(lang) }} ({{ 'languages.' + lang | t(lang) }})</h1>
-  <a href="{{ '/' | url }}" class="back-link">{{ 'ui.backToHome' | t(lang) }}</a>
+  <h1>{{ noticeData.name }} - {{ 'ui.privacyNotice' | t(lang) }} ({{ lang | getLanguageName }})</h1>
+  <a href="{{ '/' | url }}" class="back-link" data-translate="backToHome">{{ 'ui.backToHome' | t(lang) }}</a>
 </div>
 
 <div class="version-controls">

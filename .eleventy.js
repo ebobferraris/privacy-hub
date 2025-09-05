@@ -112,7 +112,7 @@ module.exports = function(eleventyConfig) {
 
   // Add custom filters
   eleventyConfig.addFilter("getLanguageName", function(code) {
-    const names = { it: 'Italiano', en: 'English', fr: 'Français', de: 'Deutsch', es: 'Español' };
+    const names = { it: 'Italiano', en: 'English', fr: 'Français', de: 'Deutsch', sl: 'Slovenščina', es: 'Español' };
     return names[code] || code.toUpperCase();
   });
 

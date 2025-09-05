@@ -109,17 +109,17 @@ class VersionManager {
     try {
       const metadata = await fs.readJson(metadataPath);
 
-      if (!metadata.versions) {
-        metadata.versions = [];
+      if (!metadata.languages[lang]) {
+        metadata.languages[lang] = [];
       }
 
-      if (!metadata.versions.includes(version)) {
-        metadata.versions.push(version);
-        metadata.versions.sort((a, b) => this.compareVersions(b, a)); // Latest first
+      if (!metadata.languages[lang].includes(version)) {
+        metadata.languages[lang].push(version);
+        metadata.languages[lang].sort((a, b) => this.compareVersions(b, a)); // Latest first
       }
 
       await fs.writeJson(metadataPath, metadata, { spaces: 2 });
-      console.log(`📝 Updated metadata for ${noticeId} with version ${version}`);
+      console.log(`📝 Updated metadata for ${noticeId}/${lang} with version ${version}`);
     } catch (error) {
       console.error(`❌ Error updating metadata for ${noticeId}:`, error.message);
     }
@@ -181,8 +181,8 @@ class VersionManager {
 
     if (mainVersions.length === 0 || langVersions.length === 0) return null;
 
-    const mainLatest = mainVersions[0]?.version;
-    const langLatest = langVersions[0]?.version;
+    const mainLatest = mainVersions[0];
+    const langLatest = langVersions[0];
 
     if (!mainLatest || !langLatest) return null;
 
