@@ -29,13 +29,13 @@ eleventyComputed:
 
 <div class="version-controls">
   <div class="version-selector">
-    <label for="version-select">{{ 'ui.version' | t(lang) }}:</label>
+    <label for="version-select" data-translate="version">{{ 'ui.version' | t(lang) }}:</label>
     <select id="version-select">
       {% set latestVersion = null %}
       {% for version in langVersions %}
         {% if version.isLatest %}
           {% set latestVersion = version.version %}
-          <option value="{{ version.version }}" selected>
+          <option value="{{ version.version }}" selected data-translate="latest">
             {{ version.version }} ({{ 'ui.latest' | t(lang) }})
           </option>
         {% endif %}
