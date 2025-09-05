@@ -522,11 +522,11 @@ body {
     flex-direction: row;  /* Keep horizontal layout on mobile */
     justify-content: space-between;
     align-items: center;
-    padding: 0 15px;  /* Reduce horizontal padding */
+    padding: 0 20px;  /* Reduce horizontal padding */
   }
 
   .header h1 {
-    font-size: 1.2rem;  /* Smaller font size for mobile */
+    font-size: 1.5rem;  
     flex: 1;  /* Allow title to shrink if needed */
     min-width: 0;  /* Allow text to wrap if needed */
   }
@@ -575,7 +575,8 @@ body {
   .language-button {
     justify-content: center;
     min-width: auto;  /* Allow natural width */
-    padding: 0.5rem;  /* Smaller padding for mobile */
+    padding: 0.6rem 1rem;
+    font-size: 1rem;
     min-height: 44px;  /* iOS recommended touch target */
   }
 
@@ -584,99 +585,105 @@ body {
     box-shadow: none;
     background: rgba(255,255,255,0.95);
     margin-top: 0.5rem;
-    min-width: 180px;  /* Slightly smaller dropdown for mobile */
+    min-width: 200px;  /* Slightly smaller dropdown for mobile */
   }
 
   .language-item {
     min-height: 44px;  /* Better touch targets for mobile */
-    padding: 0.75rem;
+    padding: 0.8rem 1.2rem;
   }
 
   .header {
-    padding: 0.75rem 0;  /* Reduce header height on mobile */
+    padding: 1rem 0;
   }
 }
 
 /* Small phones (iPhone 8, SE, Android phones ~480px and below) */
 @media (max-width: 480px) {
   .header {
-    padding: 0.5rem 0;  /* Even smaller padding */
+    padding: 0.8rem 0;  /* Smaller padding for mobile */
   }
 
   .header .container {
-    padding: 0 10px;  /* Tighter horizontal padding */
+    padding: 0 15px;  /* Tighter horizontal padding */
   }
 
   .header h1 {
-    font-size: 1rem;   /* Smaller font */
+    font-size: 1.3rem;   /* Smaller font */
     line-height: 1.2;  /* Tighter line height */
   }
 
   .language-button {
-    padding: 0.4rem 0.6rem;  /* Smaller button padding */
-    font-size: 0.8rem;       /* Smaller button text */
-    min-width: 70px;         /* Smaller minimum width */
-    min-height: 40px;        /* Adjusted touch target for small screens */
+    padding: 0.5rem 0.8rem;  /* Smaller button padding */
+    font-size: 0.9rem;       /* Smaller button text */
+    min-width: auto;         /* Smaller minimum width */
+    min-height: 44px;        /* Adjusted touch target for small screens */
   }
 
   .language-menu {
-    min-width: 160px;  /* Smaller dropdown */
+    min-width: 180px;  /* Smaller dropdown */
+    margin-top: 0.4rem;
   }
 
   .language-item {
     min-height: 40px;  /* Adjusted touch target */
-    padding: 0.6rem;   /* Smaller padding */
+    padding: 0.7rem 1rem;   /* Smaller padding */
   }
 
   .container {
-    padding: 0 10px;  /* Consistent container padding */
+    padding: 0 15px;  /* Consistent container padding */
   }
 }
 
 /* Extra small screens (iPhone SE, very small Android phones) */
 @media (max-width: 375px) {
   .header {
-    padding: 0.4rem 0;  /* Minimal padding */
+    padding: 0.6rem 0;  /* Minimal padding */
   }
 
   .header h1 {
-    font-size: 0.9rem;  /* Very small font */
+    font-size: 1.1rem;  /* Very small font */
+    line-height: 1.2;
   }
 
   .language-button {
-    padding: 0.3rem 0.5rem;  /* Minimal button padding */
-    font-size: 0.75rem;      /* Very small button text */
-    min-width: 60px;         /* Very small minimum width */
-    min-height: 36px;        /* Minimal touch target */
+    padding: 0.4rem 0.6rem;  /* Minimal button padding */
+    font-size: 0.8rem;      /* Very small button text */
+    min-width: auto;
+    min-height: 40px;        /* Minimal touch target */
   }
 
   .language-menu {
-    min-width: 140px;  /* Very small dropdown */
+    min-width: 160px;  /* Very small dropdown */
+    margin-top: 0.3rem;
   }
 
   .language-item {
-    min-height: 36px;  /* Minimal touch target */
-    padding: 0.5rem;   /* Minimal padding */
+    min-height: 38px;  /* Minimal touch target */
+    padding: 0.6rem 0.8rem;   /* Minimal padding */
   }
 
   .container {
-    padding: 0 8px;  /* Minimal container padding */
+    padding: 0 10px;  /* Minimal container padding */
   }
 }
 
 /* Landscape orientation for small screens */
 @media (max-width: 480px) and (orientation: landscape) {
   .header {
-    padding: 0.3rem 0;  /* Minimal padding in landscape */
+    padding: 0.5rem 0;  /* Minimal padding in landscape */
   }
 
   .header h1 {
-    font-size: 0.85rem;  /* Very small for landscape */
+    font-size: 1rem;  
+    line-height: 1.2;
   }
 
   .language-button {
-    padding: 0.25rem 0.4rem;  /* Minimal button padding */
-    font-size: 0.7rem;        /* Very small button text */
+    padding: 0.3rem 0.5rem;  /* Minimal button padding */
+    font-size: 0.75rem;        /* small button text */
+    min-width: auto;
+    min-height: 40px;        /* Minimal touch target */
   }
 
   .language-menu {
