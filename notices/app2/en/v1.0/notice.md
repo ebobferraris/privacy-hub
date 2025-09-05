@@ -1,5 +1,5 @@
 ---
-title: "Privacy Notice for App1"
+title: "Privacy Notice for App2"
 date: 2025-01-01
 version: "1.0"
 last_updated: "2025-01-01"
@@ -14,7 +14,7 @@ whats_new: |
 
 # Privacy Notice
 
-This is the privacy notice for App1.
+This is the privacy notice for App2.
 
 ## Data Collection
 

@@ -5,6 +5,11 @@ version: "1.0"
 last_updated: "2025-01-01"
 based_on_version: "1.0"
 language: "it"
+whats_new: |
+  - Migliorate le misure di sicurezza dei dati con crittografia end-to-end
+  - Aggiunta gestione del consenso utente per l'elaborazione dei dati
+  - Maggiore trasparenza nelle pratiche di raccolta dati
+  - Nuove opzioni di contatto per richieste sulla privacy
 ---
 
 # Informativa sulla Privacy
