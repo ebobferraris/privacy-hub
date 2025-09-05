@@ -75,8 +75,14 @@ function updatePageTranslations() {
     translatableElements.forEach(element => {
       if (element) {
         const key = element.getAttribute('data-translate');
-        const translation = window.langManager.getTranslation(key);
+        let translation = window.langManager.getTranslation(key);
         if (translation) {
+          if (key === 'ui.chooseLanguage') {
+            // Replace {app} placeholder with actual app name
+            const appName = element.closest('.notice-placeholder').querySelector('h1').textContent.split(' - ')[0];
+            translation = translation.replace('{app}', appName);
+          }
+
           if (element.tagName === 'INPUT' && element.type === 'placeholder') {
             element.placeholder = translation;
           } else {
