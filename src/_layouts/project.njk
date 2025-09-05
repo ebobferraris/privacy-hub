@@ -1,7 +1,7 @@
 ---
 layout: base.njk
 eleventyComputed:
-  title: "{{ (notices | findNotice(project)).name }} - {{ 'ui.privacyNotice' | t(lang) }}"
+  title: "{{ (notices | findNotice(project)).name }} - Privacy Notice"
   permalink: "/notices/{{ project }}/index.html"
 ---
 
@@ -10,44 +10,48 @@ eleventyComputed:
 {% set noticeData = notices | findNotice(noticeId) %}
 
 <div class="notice-header">
-  <h1>{{ noticeData.name }} - {{ 'ui.privacyNotice' | t(lang) }}</h1>
-  <a href="{{ '/' | url }}" class="back-link">{{ 'ui.backToHome' | t(lang) }}</a>
+  <h1>{{ noticeData.name }} - <span data-translate="ui.privacyNotice">{{ 'ui.privacyNotice' | t('it') }}</span></h1>
+  <a href="{{ '/' | url }}" class="back-link" data-translate="ui.backToHome">{{ 'ui.backToHome' | t('it') }}</a>
 </div>
 
 <!-- Warning banner for unavailable translations -->
 <div id="translation-warning" class="translation-warning" style="display: none;">
-  <strong>{{ 'warnings.translationUnavailable' | t(lang) }}</strong>
-  <p>{{ 'warnings.translationUnavailableDesc' | t(lang) }}</p>
+  <strong data-translate="warnings.translationUnavailable">{{ 'warnings.translationUnavailable' | t('it') }}</strong>
+  <p data-translate="warnings.translationUnavailableDesc">{{ 'warnings.translationUnavailableDesc' | t('it') }}</p>
 </div>
 
 <div class="notice-content">
   <div class="notice-placeholder">
-    <h2>{{ 'ui.selectLanguage' | t(lang) }}</h2>
-    <p>{{ 'ui.chooseLanguage' | t(lang, {app: noticeData.name}) }}</p>
+    <h2 data-translate="ui.selectLanguage">{{ 'ui.selectLanguage' | t('it') }}</h2>
+    <p data-translate="ui.chooseLanguage">{{ 'ui.chooseLanguage' | t('it', {app: noticeData.name}) }}</p>
 
     <div class="languages-grid">
       {% for langCode in noticeData.languages %}
         {% set langName = langCode | getLanguageName %}
         <div class="language-card">
           <h3>{{ langName }}</h3>
-          <p>
+          {% if langCode == noticeData.main_language %}
+          <p data-translate="ui.mainLanguage">
+          {% else %}
+          <p data-translate="ui.translation">
+          {% endif %}
             {% if langCode == noticeData.main_language %}
-              {{ 'ui.mainLanguage' | t(lang) }}
+              {{ 'ui.mainLanguage' | t('it') }}
             {% else %}
-              {{ 'ui.translation' | t(lang) }}
+              {{ 'ui.translation' | t('it') }}
             {% endif %}
           </p>
-          <a href="{{ ('/notices/' + project + '/' + langCode + '/') | url }}" class="view-notice">
+          <a href="{{ ('/notices/' + project + '/' + langCode + '/') | url }}" class="view-notice" data-translate="ui.viewIn{{ langCode | capitalize }}">
             {% if langCode == 'it' %}
-              {{ 'ui.viewInItalian' | t(lang) }}
+              {{ 'ui.viewInItalian' | t('it') }}
             {% elif langCode == 'en' %}
-              {{ 'ui.viewInEnglish' | t(lang) }}
+              {{ 'ui.viewInEnglish' | t('it') }}
             {% elif langCode == 'fr' %}
-              {{ 'ui.viewInFrench' | t(lang) }}
+              {{ 'ui.viewInFrench' | t('it') }}
             {% elif langCode == 'de' %}
-              {{ 'ui.viewInGerman' | t(lang) }}
+              {{ 'ui.viewInGerman' | t('it') }}
             {% elif langCode == 'sl' %}
-              {{ 'ui.viewInSlovenian' | t(lang) }}
+              {{ 'ui.viewInSlovenian' | t('it') }}
             {% endif %}
           </a>
         </div>
@@ -91,15 +95,14 @@ function updateLanguageTexts(lang) {
   document.querySelectorAll('[data-translate]').forEach(element => {
     const key = element.getAttribute('data-translate');
     if (key) {
-      const translation = langManager.getTranslation(key);
+      let translation = langManager.getTranslation(key);
       if (translation) {
-        if (key === 'chooseLanguage') {
+        if (key === 'ui.chooseLanguage') {
           // Replace {app} placeholder with actual app name
           const appName = element.closest('.notice-placeholder').querySelector('h1').textContent.split(' - ')[0];
-          element.textContent = translation.replace('{app}', appName);
-        } else {
-          element.textContent = translation;
+          translation = translation.replace('{app}', appName);
         }
+        element.textContent = translation;
       }
     }
   });

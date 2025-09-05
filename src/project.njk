@@ -7,4 +7,6 @@ pagination:
 eleventyComputed:
   title: "{{ project.name }} - {% if lang == 'it' %}Informativa Privacy{% else %}Privacy Notice{% endif %}"
   permalink: "/notices/{{ project.id }}/index.html"
+  project: "{{ notice.project }}"
+  lang: "{{ notice.lang }}"
 ---
