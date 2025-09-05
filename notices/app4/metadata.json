@@ -1,9 +1,8 @@
 {
-  "name": "App2",
-  "description": "Description of App2",
+  "name": "App4",
+  "description": "Description of App4",
   "languages": [
-    "it",
-    "en"
+    "it"
   ],
   "main_language": "it",
   "versions": [

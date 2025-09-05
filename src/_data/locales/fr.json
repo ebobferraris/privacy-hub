@@ -17,7 +17,7 @@
     "privacyNotice": "Avis de confidentialité",
     "version": "Version",
     "latest": "dernière",
-    "whatsNew": "Nouveautés dans {version}",
+    "whatsNew": "Nouveautés dans la version {version}",
     "contentNotAvailable": "Contenu de l'avis non disponible.",
     "viewInFrench": "Voir en français",
     "viewInGerman": "Voir en allemand",

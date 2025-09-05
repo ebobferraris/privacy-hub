@@ -17,7 +17,7 @@
     "privacyNotice": "Datenschutzhinweis",
     "version": "Version",
     "latest": "neueste",
-    "whatsNew": "Was ist neu in {version}",
+    "whatsNew": "Was ist neu in Version {version}",
     "contentNotAvailable": "Inhalt der Mitteilung nicht verfügbar.",
     "viewInFrench": "Auf Französisch anzeigen",
     "viewInGerman": "Auf Deutsch anzeigen",

@@ -17,7 +17,7 @@
     "privacyNotice": "Privacy Notice",
     "version": "Version",
     "latest": "latest",
-    "whatsNew": "What's New in {version}",
+    "whatsNew": "What's New in version {version}",
     "contentNotAvailable": "Notice content not available.",
     "viewInFrench": "View in French",
     "viewInGerman": "View in German",

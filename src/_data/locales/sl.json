@@ -17,7 +17,7 @@
     "privacyNotice": "Obvestilo o zasebnosti",
     "version": "Različica",
     "latest": "najnovejša",
-    "whatsNew": "Kaj je novega v {version}",
+    "whatsNew": "Kaj je novega v različici {version}",
     "contentNotAvailable": "Vsebina obvestila ni na voljo.",
     "viewInFrench": "Ogled v francoščini",
     "viewInGerman": "Ogled v nemščini",
